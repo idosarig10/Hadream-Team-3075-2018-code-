@@ -9,7 +9,10 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+=======
+>>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
 
@@ -316,6 +319,7 @@ public class MPController implements Sendable
 	      	m_table.putNumber("Position Error", getPositionError());
 	    }
 	}
+<<<<<<< HEAD
 
 	@Override
 	public String getName() {
@@ -346,6 +350,8 @@ public class MPController implements Sendable
 		// TODO Auto-generated method stub
 		
 	}
+=======
+>>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
 	
 	
 }

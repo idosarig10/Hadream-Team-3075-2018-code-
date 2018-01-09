@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -12,11 +13,25 @@ import org.usfirst.frc.team3075.robot.Robot;
 
 /**
  * An example command.  You can replace me with your own command.
+=======
+package org.usfirst.frc.team3075.robot.commands;
+
+import edu.wpi.first.wpilibj.command.Command;
+
+import org.usfirst.frc.team3075.robot.Robot;
+
+/**
+ *
+>>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
  */
 public class ExampleCommand extends Command {
 	public ExampleCommand() {
 		// Use requires() here to declare subsystem dependencies
+<<<<<<< HEAD
 		requires(Robot.kExampleSubsystem);
+=======
+		requires(Robot.exampleSubsystem);
+>>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
 	}
 
 	// Called just before this Command runs the first time

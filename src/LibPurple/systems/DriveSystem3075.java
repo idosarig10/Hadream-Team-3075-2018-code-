@@ -8,6 +8,10 @@ import LibPurple.control.MPController.MPValue;
 import LibPurple.control.PIDvalue;
 import LibPurple.control.TrajectoryFile;
 import LibPurple.control.TrajectorySMP;
+<<<<<<< HEAD
+=======
+import LibPurple.sensors.Camera3075;
+>>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
 import LibPurple.sensors.ConsoleJoystick;
 import LibPurple.sensors.Encoder3075;
 import LibPurple.systems.DriveSystem3075.DrivingState;
