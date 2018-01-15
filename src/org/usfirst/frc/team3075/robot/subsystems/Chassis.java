@@ -32,8 +32,8 @@ public class Chassis extends DriveSystem3075
 
 	private Solenoid3075 shifter;
 
-	private Encoder3075 leftEncoder;
-	private Encoder3075 rightEncoder;
+	private EncoderTalon3075 leftEncoder;
+	private EncoderTalon3075 rightEncoder;
 
 	public static enum Shift
 	{
@@ -48,6 +48,7 @@ public class Chassis extends DriveSystem3075
 		rearRight = new WPI_TalonSRX(RobotMap.rearRight);
 
 		frontRight.setInverted(true);
+		rearRight.setInverted(true);
 
 		shifter = new Solenoid3075(RobotMap.shifterForward, RobotMap.shifterReverse);
 		leftEncoder = new EncoderTalon3075(frontLeft);
@@ -64,7 +65,7 @@ public class Chassis extends DriveSystem3075
 		leftEncoder.setDistancePerPulse(Constants.distancePerPulse);
 		super.distancePerAngle = Constants.distancePerAngle;
 
-		leftEncoder.setReverseDirection(true);
+//		leftEncoder.setReverseDirection(true);
 
 		super.rightMaxV = Constants.powerRightMaxV;
 		super.leftMaxV = Constants.powerLeftMaxV;
@@ -91,7 +92,7 @@ public class Chassis extends DriveSystem3075
 	{
 		// Set the default command for a subsystem here.
 		//setDefaultCommand(new MySpecialCommand());
-		setDefaultCommand(super.xboxArcadeDrive(Robot.m_oi.xbox));
+		setDefaultCommand(super.xboxArcadeDrive(Robot.oi.xbox));
 	}
 	
 	public Shift getShift()
@@ -138,12 +139,12 @@ public class Chassis extends DriveSystem3075
 	}
 
 	
-	public Encoder3075 getLeftEncoder() {
+	public EncoderTalon3075 getLeftEncoder() {
 		return leftEncoder;
 	}
 
 	
-	public Encoder3075 getRightEncoder() {
+	public EncoderTalon3075 getRightEncoder() {
 		return rightEncoder;
 	}
 

@@ -81,7 +81,7 @@ public class MPController implements Sendable
 	private Trajectory3075 trajectory;
 	
 	private double tolerance = 0.1;
-	private boolean enabled = false; // fixed you <3
+	private boolean enabled = false; // fixed you alon <3
 	private java.util.Timer controllerLoop;
 	private final double period = 0.01; 
 	

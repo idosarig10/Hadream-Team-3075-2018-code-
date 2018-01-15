@@ -9,13 +9,13 @@ public class TrajectoryTMP extends Trajectory3075
 	private double distance;
 	private double direction;
 	
-	public TrajectoryTMP(double distance, double MAX_A)
+	public TrajectoryTMP(double distance, double maxA, double maxV)
 	{
-		this.direction = Math.signum(distance);
 		this.setpoint = new Setpoint();
-		
-		this.distance = distance;
-		this.maxA = MAX_A;
+		this.direction = Math.signum(distance);
+		this.distance = distance * direction;
+		this.maxA = maxA * direction;
+		this.maxV = maxV * direction;
 		
 		this.T = distance/maxV + maxV/maxA;
 	}
@@ -25,7 +25,7 @@ public class TrajectoryTMP extends Trajectory3075
 	{
 		double b = T - ((2 * maxV) / maxA); // the upper base of the trapezoid
 		double x = maxV / maxA; // the time it takes to accelerate to maxV
-//		
+		
 		if(time < x)
 		{
 			double a = maxA;

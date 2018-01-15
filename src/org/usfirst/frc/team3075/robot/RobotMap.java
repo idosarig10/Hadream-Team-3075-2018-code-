@@ -15,7 +15,6 @@ package org.usfirst.frc.team3075.robot;
  */
 public class RobotMap 
 {
-	
 	////chassis////
 	
 	public static final int rearLeft = 1;

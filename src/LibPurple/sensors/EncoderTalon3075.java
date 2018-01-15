@@ -1,6 +1,5 @@
 package LibPurple.sensors;
 
-import com.ctre.CANTalon;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
@@ -11,7 +10,6 @@ public class EncoderTalon3075 implements Encoder3075{
 	private double dpp = 1;
 	private double resetPoint = 0;
 	private double inverted = 1;
-	private static double encoderPulsesPerRotation = 4;
 	PIDSourceType type = PIDSourceType.kDisplacement;
 	
 	private static double minimumValue = 0.0005;
@@ -26,11 +24,6 @@ public class EncoderTalon3075 implements Encoder3075{
 	{
 		myTalon = talon;
 		this.inverted = inverted ? -1 : 1;
-	}
-	
-	public void setPulsesPerRotation(double pulses)
-	{
-		encoderPulsesPerRotation = pulses;
 	}
 	
 	public void setReverseDirection(boolean reverseDirection)
@@ -56,7 +49,7 @@ public class EncoderTalon3075 implements Encoder3075{
 	
 	public double getRawPosition()
 	{
-		return myTalon.getSelectedSensorPosition(0) * inverted;
+		return (myTalon.getSelectedSensorPosition(0)-resetPoint) * inverted;
 	}
 	
 	public double getDistance()

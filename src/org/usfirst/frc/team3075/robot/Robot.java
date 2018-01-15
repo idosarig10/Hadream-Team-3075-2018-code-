@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.lang.Thread.State;
 
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
 import org.usfirst.frc.team3075.robot.commands.ExampleCommand;
 import org.usfirst.frc.team3075.robot.subsystems.Chassis;
 import org.usfirst.frc.team3075.robot.subsystems.ExampleSubsystem;
@@ -30,7 +32,7 @@ import org.usfirst.frc.team3075.robot.subsystems.ExampleSubsystem;
 public class Robot extends IterativeRobot {
 	public static final ExampleSubsystem kExampleSubsystem
 			= new ExampleSubsystem();
-	public static OI m_oi;
+	public static OI oi;
 	public static Chassis driveSystem = new Chassis();
 
 	Command m_autonomousCommand;
@@ -43,7 +45,7 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
-		m_oi = new OI();
+		oi = new OI();
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
@@ -106,17 +108,29 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+		driveSystem.reset();
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+		rightMaxV = 0;
+		leftMaxV = 0;
 	}
-
+	double rightMaxV = 0;
+	double leftMaxV = 0;
 	/**
 	 * This function is called periodically during operator control.
 	 */
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		double rightCurrV = driveSystem.getRightEncoder().getRate();
+		double leftCurrV = driveSystem.getLeftEncoder().getRate();
+		
+		if(rightCurrV > rightMaxV)
+			rightMaxV = rightCurrV;
+		if(leftCurrV > leftMaxV)
+			leftMaxV = leftCurrV;
+		logToDashBoard();
 	}
 
 	/**
@@ -124,5 +138,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+	}
+	
+	public void logToDashBoard()
+	{
+		SmartDashboard.putNumber("left raw distance", driveSystem.getLeftEncoder().getDistance());
+		SmartDashboard.putNumber("right raw distance",driveSystem.getRightEncoder().getDistance());
+		SmartDashboard.putNumber("left  XD velicity", driveSystem.getLeftEncoder().getRate());
+		SmartDashboard.putNumber("right XD velocity", driveSystem.getRightEncoder().getRate());
+		SmartDashboard.putNumber("left XD max v", leftMaxV);
+		SmartDashboard.putNumber("right XD max v", rightMaxV);
 	}
 }

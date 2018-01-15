@@ -32,10 +32,13 @@ public class OI {
 
 	Button lowShift = new JoystickButton(xbox, 5);
 	Button highShift = new JoystickButton(xbox, 6);
-
+	Button driveforward = new JoystickButton(xbox, 1);
+	
 	public OI() 
 	{
 		lowShift.whenPressed(new SetShift(Chassis.Shift.Power));
 		highShift.whenPressed(new SetShift(Chassis.Shift.Speed));
+		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(1));
+//		driveforward.whenPressed(Robot.driveSystem.driveCurve(1, 90, false));
 	}
 }
