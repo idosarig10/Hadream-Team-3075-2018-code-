@@ -126,9 +126,9 @@ public class Robot extends IterativeRobot {
 		double rightCurrV = driveSystem.getRightEncoder().getRate();
 		double leftCurrV = driveSystem.getLeftEncoder().getRate();
 		
-		if(rightCurrV > rightMaxV)
+		if(Math.abs(rightCurrV) > Math.abs(rightMaxV))
 			rightMaxV = rightCurrV;
-		if(leftCurrV > leftMaxV)
+		if(Math.abs(leftCurrV) > Math.abs(leftMaxV))
 			leftMaxV = leftCurrV;
 		logToDashBoard();
 	}

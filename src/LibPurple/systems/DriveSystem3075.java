@@ -169,6 +169,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 			leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 			setPIDEnabled(false);
 			setMPEnabled(true);
+			Utils.print("mp enabled");
 			break;
 		default:
 			setPIDEnabled(false);
@@ -284,10 +285,11 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		return new DriveDistance(this, distance, distance, true, maxA);
 	}
 	
-	public Command driveStraightTrapizodial(double distance)
+	public Command driveStraightTrapizodial(double distance, boolean endless)
 	{
-		return new DriveDistance(this, distance, distance, false, getMaxA(), getMaxA(), Type.TrapizoidalMotionProfile, getMaxV(), getMaxV());
+		return new DriveDistance(this, distance, distance, endless, getMaxA(), getMaxA(), Type.TrapizoidalMotionProfile, getMaxV(), getMaxV());
 	}
+	
 
 	/**
 	 * drives in a circular motion
@@ -312,6 +314,9 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		double leftMaxV = !clockwise ? getMaxV() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) : getMaxV();
 		//robot's right side max velocity
 		double rightMaxV = clockwise ? getMaxV() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) : getMaxV();
+		
+		Utils.print("left max v:" + (leftMaxV/2));
+		Utils.print("right max v: " + (rightMaxV/2));
 		
 		return new DriveDistance(this, leftDistance, rightDistance, false, leftMaxA/2, rightMaxA/2, Type.TrapizoidalMotionProfile, leftMaxV/2, rightMaxV/2);
 	}
@@ -998,7 +1003,7 @@ class DriveDistance extends Command
 			return false;
 		}
 
-		return leftMP.isTimeUp() && rightMP.isTimeUp();// && rightMP.onTarget() && leftMP.onTarget();
+		return leftMP.isTimeUp() && rightMP.isTimeUp() && rightMP.onTarget() && leftMP.onTarget();
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class OI {
 	{
 		lowShift.whenPressed(new SetShift(Chassis.Shift.Power));
 		highShift.whenPressed(new SetShift(Chassis.Shift.Speed));
-		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(1));
-//		driveforward.whenPressed(Robot.driveSystem.driveCurve(1, 90, false));
+//		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(1, false));
+		driveforward.whenPressed(Robot.driveSystem.driveCurve(1, 90, false));
 	}
 }

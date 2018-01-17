@@ -53,4 +53,10 @@ public class TrajectorySMP extends Trajectory3075
 	{
 		this.distance = distance;
 	}
+
+	@Override
+	public double getDirection() {
+		// TODO Auto-generated method stub
+		return this.direction;
+	}
 }

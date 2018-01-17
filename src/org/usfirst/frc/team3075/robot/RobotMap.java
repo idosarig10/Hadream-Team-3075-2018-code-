@@ -26,4 +26,10 @@ public class RobotMap
     public static final int shifterForward = 6;
     public static final int shifterReverse = 7;
     
+    ////Intake////
+
+//    public static final int topMotor = 0 
+//    public static final int lowMotor = 0
+//    public static final int conveyorMotor = 0
+    
 }

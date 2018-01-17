@@ -125,6 +125,8 @@ public class MPController implements Sendable
 		this.lastError = 0;
 		this.errorIntegral = 0;
 		startTime = Timer.getFPGATimestamp();
+		Utils.print("total time: " + trajectory.getTotalTime() + " distance: " + trajectory.getDistance());
+		Utils.print("direction: " + trajectory.getDirection());
     }
 
 	public void calculate()
@@ -226,6 +228,8 @@ public class MPController implements Sendable
 	{
 		synchronized(currTask)
 		{
+			Utils.print(currTask.toString());
+			Utils.print("task is enabled: " + this.enabled);
 			if(this.enabled == false)
 			{
 				this.enabled = true;
