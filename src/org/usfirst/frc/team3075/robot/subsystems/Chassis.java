@@ -64,8 +64,9 @@ public class Chassis extends DriveSystem3075
 		rightEncoder.setDistancePerPulse(Constants.distancePerPulse);
 		leftEncoder.setDistancePerPulse(Constants.distancePerPulse);
 		super.distancePerAngle = Constants.distancePerAngle;
-
-//		leftEncoder.setReverseDirection(true);
+  
+		leftEncoder.setReverseDirection(true);
+		rightEncoder.setReverseDirection(true);
 
 		super.rightMaxV = Constants.powerRightMaxV;
 		super.leftMaxV = Constants.powerLeftMaxV;
@@ -92,7 +93,7 @@ public class Chassis extends DriveSystem3075
 	{
 		// Set the default command for a subsystem here.
 		//setDefaultCommand(new MySpecialCommand());
-		setDefaultCommand(super.xboxArcadeDrive(Robot.oi.xbox));
+		setDefaultCommand(super.xboxArcadeDrive(Robot.oi.driverStick));
 	}
 	
 	public Shift getShift()

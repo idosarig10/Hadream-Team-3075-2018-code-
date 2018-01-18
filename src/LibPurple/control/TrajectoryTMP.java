@@ -1,6 +1,7 @@
 package LibPurple.control;
 
 import LibPurple.control.Trajectory3075.Setpoint;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TrajectoryTMP extends Trajectory3075
 {
@@ -13,11 +14,11 @@ public class TrajectoryTMP extends Trajectory3075
 	{
 		this.setpoint = new Setpoint();
 		this.direction = Math.signum(distance);
-		this.distance = distance * direction;
+		this.distance = distance;
 		this.maxA = maxA * direction;
 		this.maxV = maxV * direction;
 		
-		this.T = distance/maxV + maxV/maxA;
+		this.T = distance/this.maxV + this.maxV/this.maxA;
 	}
 	
 	@Override
@@ -76,4 +77,9 @@ public class TrajectoryTMP extends Trajectory3075
 	{
 		this.distance = distance;
 	}
+	
+	public double getDirection() {
+		return direction;
+	}
+
 }
