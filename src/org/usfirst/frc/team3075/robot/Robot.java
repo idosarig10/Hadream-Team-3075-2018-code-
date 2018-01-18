@@ -1,57 +1,26 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> latesttryupdate
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-<<<<<<< HEAD
-=======
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
->>>>>>> latesttryupdate
-
 package org.usfirst.frc.team3075.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> latesttryupdate
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import java.lang.Thread.State;
-
-<<<<<<< HEAD
-import org.usfirst.frc.team3075.robot.commands.ExampleCommand;
-import org.usfirst.frc.team3075.robot.subsystems.Chassis;
-=======
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team3075.robot.commands.ExampleCommand;
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
-import javax.swing.text.StyleContext.SmallAttributeSet;
+import java.lang.Thread.State;
 
 import org.usfirst.frc.team3075.robot.commands.ExampleCommand;
 import org.usfirst.frc.team3075.robot.subsystems.Chassis;
-<<<<<<< HEAD
->>>>>>> latesttryupdate
-=======
-//import org.usfirst.frc.team3075.robot.subsystems.Elevator;
->>>>>>> latesttryupdate
 import org.usfirst.frc.team3075.robot.subsystems.ExampleSubsystem;
+
+import javax.swing.text.StyleContext.SmallAttributeSet;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -67,66 +36,25 @@ import org.usfirst.frc.team3075.robot.subsystems.ExampleSubsystem;
 public class Robot extends IterativeRobot 
 {
 	public static final ExampleSubsystem kExampleSubsystem
-			= new ExampleSubsystem();
-<<<<<<< HEAD
-	public static OI m_oi;
-=======
+	= new ExampleSubsystem();
 	public static OI oi;
->>>>>>> latesttryupdate
 	public static Chassis driveSystem = new Chassis();
-//	public static Elevator elevator = new Elevator();
-	
-	
-	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
-<<<<<<< HEAD
-=======
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
- */
-public class Robot extends IterativeRobot {
+	//	public static Elevator elevator = new Elevator();
 
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-	public static OI oi;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
->>>>>>> latesttryupdate
-
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
-<<<<<<< HEAD
-<<<<<<< HEAD
-	
-	@Override
-	public void robotInit() {
-		m_oi = new OI();
-		m_chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
-=======
+
 	@Override
 	public void robotInit() {
 		oi = new OI();
 		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
-	
-	@Override
-	public void robotInit() {
-		oi = new OI();
-		m_chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
->>>>>>> latesttryupdate
 	}
 
 	/**
@@ -165,30 +93,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-		m_autonomousCommand = m_chooser.getSelected();
-=======
 		autonomousCommand = chooser.getSelected();
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
-		m_autonomousCommand = m_chooser.getSelected();
->>>>>>> latesttryupdate
-
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> latesttryupdate
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
+		if (autonomousCommand != null) {
+			autonomousCommand.start();
 		}
 	}
 
@@ -217,49 +124,23 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-<<<<<<< HEAD
-<<<<<<< HEAD
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
-		}
-	}
-
-	/**
-	 * This function is called periodically during operator control.
-=======
-		if (autonomousCommand != null)
+		if (autonomousCommand != null) {
 			autonomousCommand.cancel();
+		}
+		driveSystem.reset();
 	}
 
-	/**
-	 * This function is called periodically during operator control
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
-		driveSystem.reset();
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
-		}
-		rightMaxV = 0;
-		leftMaxV = 0;
-	}
 	double rightMaxV = 0;
 	double leftMaxV = 0;
 	/**
 	 * This function is called periodically during operator control.
->>>>>>> latesttryupdate
 	 */
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-<<<<<<< HEAD
-	}
-
-	/**
-<<<<<<< HEAD
-=======
 		double rightCurrV = driveSystem.getRightEncoder().getRate();
 		double leftCurrV = driveSystem.getLeftEncoder().getRate();
-		
+
 		if(Math.abs(rightCurrV) > Math.abs(rightMaxV))
 			rightMaxV = rightCurrV;
 		if(Math.abs(leftCurrV) > Math.abs(leftMaxV))
@@ -273,17 +154,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-<<<<<<< HEAD
-=======
-	 * This function is called periodically during test mode
-	 */
-	@Override
-	public void testPeriodic() {
 		LiveWindow.run();
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
 	}
-	
+
 	public void logToDashBoard()
 	{
 		SmartDashboard.putNumber("left raw distance", driveSystem.getLeftEncoder().getDistance());
@@ -292,12 +165,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("right XD velocity", driveSystem.getRightEncoder().getRate());
 		SmartDashboard.putNumber("left XD max v", leftMaxV);
 		SmartDashboard.putNumber("right XD max v", rightMaxV);
-<<<<<<< HEAD
->>>>>>> latesttryupdate
-=======
 		if(Robot.driveSystem.getLeftMPController().getSetpoint() != null)
 			SmartDashboard.putNumber("velocity setpoint", Robot.driveSystem.getLeftMPController().getSetpoint().velocity);
-//    	SmartDashboard.putNumber("position setpoint", setpoint.position);
->>>>>>> latesttryupdate
+		//    	SmartDashboard.putNumber("position setpoint", setpoint.position);
 	}
 }

@@ -151,13 +151,9 @@ public class TrajectoryFile extends Trajectory3075 {
 		this.distance = distance;
 	}
 
-<<<<<<< HEAD
-=======
 	@Override
 	public double getDirection() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
->>>>>>> latesttryupdate
 }
