@@ -12,10 +12,14 @@ import edu.wpi.first.wpilibj.Timer;
 <<<<<<< HEAD
 <<<<<<< HEAD
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+<<<<<<< HEAD
 =======
 >>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
 =======
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+>>>>>>> latesttryupdate
+=======
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 >>>>>>> latesttryupdate
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
@@ -98,6 +102,8 @@ public class MPController implements Sendable
 	
 	private Trajectory3075.Setpoint setpoint;
 	private double startTime;
+	
+
 	private double passedTime;
 	private double now;
 	private double dt;
@@ -184,6 +190,7 @@ public class MPController implements Sendable
     	   	
     	// Calculate the errors
     	double positionError = setpoint.position - currentPosition;
+    	
     	
     	// Calculate the PID values
     	double P = positionError * values.positionPid.kP;
@@ -377,5 +384,7 @@ public class MPController implements Sendable
 =======
 >>>>>>> latesttryupdate
 	
-	
+	public Trajectory3075.Setpoint getSetpoint() {
+		return setpoint;
+	}
 }

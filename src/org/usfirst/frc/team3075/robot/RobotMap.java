@@ -62,5 +62,20 @@ public class RobotMap {
 //    public static final int lowMotor = 0
 //    public static final int conveyorMotor = 0
     
+<<<<<<< HEAD
+>>>>>>> latesttryupdate
+=======
+    
+    ////Elevator////
+    // NOT UPDATED!!!!!!!!!!
+    public static final int bigElevatorMasterMotor = 0;
+    public static final int bigElevatorSlaveMotor = 0;
+    public static final int smallElevatorMotor = 0;
+    
+    public static final int highMicroSwitch = 0;
+    public static final int middleMicroSwitch = 0;
+    
+    
+    
 >>>>>>> latesttryupdate
 }

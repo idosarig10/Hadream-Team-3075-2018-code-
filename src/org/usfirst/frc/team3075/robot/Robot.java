@@ -46,6 +46,10 @@ import javax.swing.text.StyleContext.SmallAttributeSet;
 
 import org.usfirst.frc.team3075.robot.commands.ExampleCommand;
 import org.usfirst.frc.team3075.robot.subsystems.Chassis;
+<<<<<<< HEAD
+>>>>>>> latesttryupdate
+=======
+//import org.usfirst.frc.team3075.robot.subsystems.Elevator;
 >>>>>>> latesttryupdate
 import org.usfirst.frc.team3075.robot.subsystems.ExampleSubsystem;
 
@@ -60,7 +64,8 @@ import org.usfirst.frc.team3075.robot.subsystems.ExampleSubsystem;
  * creating this project, you must also update the build.properties file in the
  * project.
  */
-public class Robot extends IterativeRobot {
+public class Robot extends IterativeRobot 
+{
 	public static final ExampleSubsystem kExampleSubsystem
 			= new ExampleSubsystem();
 <<<<<<< HEAD
@@ -69,7 +74,9 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 >>>>>>> latesttryupdate
 	public static Chassis driveSystem = new Chassis();
-
+//	public static Elevator elevator = new Elevator();
+	
+	
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 <<<<<<< HEAD
@@ -285,6 +292,12 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("right XD velocity", driveSystem.getRightEncoder().getRate());
 		SmartDashboard.putNumber("left XD max v", leftMaxV);
 		SmartDashboard.putNumber("right XD max v", rightMaxV);
+<<<<<<< HEAD
+>>>>>>> latesttryupdate
+=======
+		if(Robot.driveSystem.getLeftMPController().getSetpoint() != null)
+			SmartDashboard.putNumber("velocity setpoint", Robot.driveSystem.getLeftMPController().getSetpoint().velocity);
+//    	SmartDashboard.putNumber("position setpoint", setpoint.position);
 >>>>>>> latesttryupdate
 	}
 }

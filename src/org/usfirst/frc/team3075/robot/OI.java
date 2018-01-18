@@ -44,6 +44,7 @@ public class OI {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> latesttryupdate
 	public ConsoleJoystick xbox = new ConsoleJoystick(0);
@@ -54,12 +55,21 @@ public class OI {
 
 =======
 	Button driveforward = new JoystickButton(xbox, 1);
+=======
+	public ConsoleJoystick driverStick = new ConsoleJoystick(0);
+	public ConsoleJoystick elevatorStick = new ConsoleJoystick(1);
+	
+	Button lowShift = new JoystickButton(driverStick, 5);
+	Button highShift = new JoystickButton(driverStick, 6);
+	Button driveforward = new JoystickButton(driverStick, 1);
+>>>>>>> latesttryupdate
 	
 >>>>>>> latesttryupdate
 	public OI() 
 	{
 		lowShift.whenPressed(new SetShift(Chassis.Shift.Power));
 		highShift.whenPressed(new SetShift(Chassis.Shift.Speed));
+<<<<<<< HEAD
 <<<<<<< HEAD
 	}
 =======
@@ -86,6 +96,10 @@ public class OI {
 =======
 //		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(1, false));
 		driveforward.whenPressed(Robot.driveSystem.driveCurve(1, 90, false));
+=======
+//		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(2, false));
+		driveforward.whenPressed(Robot.driveSystem.driveArc(1, 90, false));
+>>>>>>> latesttryupdate
 	}
 >>>>>>> latesttryupdate
 }

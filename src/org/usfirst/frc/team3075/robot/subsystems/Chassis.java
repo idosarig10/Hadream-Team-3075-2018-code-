@@ -107,9 +107,13 @@ public class Chassis extends DriveSystem3075
 		// Set the default command for a subsystem here.
 		//setDefaultCommand(new MySpecialCommand());
 <<<<<<< HEAD
+<<<<<<< HEAD
 		setDefaultCommand(super.xboxArcadeDrive(Robot.m_oi.xbox));
 =======
 		setDefaultCommand(super.xboxArcadeDrive(Robot.oi.xbox));
+>>>>>>> latesttryupdate
+=======
+		setDefaultCommand(super.xboxArcadeDrive(Robot.oi.driverStick));
 >>>>>>> latesttryupdate
 	}
 	
