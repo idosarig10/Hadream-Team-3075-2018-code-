@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
+<<<<<<< HEAD
 	<name>PowerUp3075</name>
+=======
+	<name>RobotBaseWithLib</name>
+>>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
+=======
+	<name>PowerUp3075</name>
+>>>>>>> latesttryupdate
 	<comment></comment>
 	<projects>
 	</projects>
