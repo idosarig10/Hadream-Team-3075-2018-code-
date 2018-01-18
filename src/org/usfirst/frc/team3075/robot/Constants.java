@@ -24,8 +24,8 @@ public class Constants
 	public static final PIDvalue rightVelocityPID = new PIDvalue(0, 0, 0, 0);
 	public static final PIDvalue leftVelocityPID = new PIDvalue(0, 0, 0, 0);
 
-	public static final PIDvalue rightPositionPID = new PIDvalue(1.2, 0.0001, 0);
-	public static final PIDvalue leftPositionPID = new PIDvalue(1.2, 0.0001, 0);
+	public static final PIDvalue rightPositionPID = new PIDvalue(3, 0.03, 0.0);
+	public static final PIDvalue leftPositionPID = new PIDvalue(3, 0.03, 0.0);
 
 	public static final PIDvalue rightTurnPID = new PIDvalue(0, 0, 0, 0);
 	public static final PIDvalue leftTurnPID = new PIDvalue(0, 0, 0, 0);
@@ -36,7 +36,7 @@ public class Constants
 	public static final MPValue rightTurnMP = new MPValue(rightTurnPID, 0, 0);
 	public static final MPValue leftTurnMP = new MPValue(leftTurnPID, 0, 0);
 	
-	public static final double positionTolerance = 0.03;
+	public static final double positionTolerance = 0.02;
 	public static final double turnAngleTolerance = 0;
 	
 	public static final double robotWidth = 0.66;

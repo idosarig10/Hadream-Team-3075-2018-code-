@@ -297,7 +297,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	 * @param angle - the angle of the motion, positive angle is left, negative is right
 	 * @param clockwise - true for driving on clockwise direction on the circle.
 	 */
-	public Command driveCurve(double radius, double angle, boolean clockwise)
+	public Command driveArc(double radius, double angle, boolean clockwise)
 	{
 		double leftRadius = clockwise ? radius +  (robotWidth / 2) : radius - (robotWidth / 2); // robot's left side circle radius
 		double rightRadius = clockwise ? radius -  (robotWidth / 2) : radius + (robotWidth / 2); //robot's right side circle radius

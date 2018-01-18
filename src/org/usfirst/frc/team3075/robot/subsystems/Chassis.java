@@ -93,7 +93,7 @@ public class Chassis extends DriveSystem3075
 	{
 		// Set the default command for a subsystem here.
 		//setDefaultCommand(new MySpecialCommand());
-		setDefaultCommand(super.xboxArcadeDrive(Robot.oi.xbox));
+		setDefaultCommand(super.xboxArcadeDrive(Robot.oi.driverStick));
 	}
 	
 	public Shift getShift()

@@ -1,6 +1,7 @@
 package LibPurple.control;
 
 import LibPurple.control.Trajectory3075.Setpoint;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TrajectoryTMP extends Trajectory3075
 {
