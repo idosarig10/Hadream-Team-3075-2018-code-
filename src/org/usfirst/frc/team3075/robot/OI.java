@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> latesttryupdate
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -15,6 +18,7 @@ import LibPurple.sensors.ConsoleJoystick;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+<<<<<<< HEAD
 =======
 package org.usfirst.frc.team3075.robot;
 
@@ -22,6 +26,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 
 import org.usfirst.frc.team3075.robot.commands.ExampleCommand;
 >>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
+=======
+>>>>>>> latesttryupdate
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -37,15 +43,24 @@ public class OI {
 	// Button button = new JoystickButton(stick, buttonNumber);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> latesttryupdate
 	public ConsoleJoystick xbox = new ConsoleJoystick(0);
 
 	Button lowShift = new JoystickButton(xbox, 5);
 	Button highShift = new JoystickButton(xbox, 6);
+<<<<<<< HEAD
 
+=======
+	Button driveforward = new JoystickButton(xbox, 1);
+	
+>>>>>>> latesttryupdate
 	public OI() 
 	{
 		lowShift.whenPressed(new SetShift(Chassis.Shift.Power));
 		highShift.whenPressed(new SetShift(Chassis.Shift.Speed));
+<<<<<<< HEAD
 	}
 =======
 	// There are a few additional built in buttons you can use. Additionally,
@@ -68,4 +83,9 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 >>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
+=======
+//		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(1, false));
+		driveforward.whenPressed(Robot.driveSystem.driveCurve(1, 90, false));
+	}
+>>>>>>> latesttryupdate
 }
