@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package LibPurple.sensors;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -30,7 +29,6 @@ public class UltraSonic3075 {
 	}
 
 }
-=======
 //package LibPurple.sensors;
 //
 //import edu.wpi.first.wpilibj.AnalogInput;
@@ -62,4 +60,3 @@ public class UltraSonic3075 {
 //	}
 //
 //}
->>>>>>> latesttryupdate

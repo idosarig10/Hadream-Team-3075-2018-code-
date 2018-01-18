@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package LibPurple.actuator;
 
 import LibPurple.utils.Utils;
@@ -71,7 +70,6 @@ public class Victor3075 extends Victor implements SpeedController3075{
 	
 	
 }
-=======
 //package LibPurple.actuator;
 //
 //import LibPurple.utils.Utils;
@@ -144,4 +142,3 @@ public class Victor3075 extends Victor implements SpeedController3075{
 //	
 //	
 //}
->>>>>>> latesttryupdate

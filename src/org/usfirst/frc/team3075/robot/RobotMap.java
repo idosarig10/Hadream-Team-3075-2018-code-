@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> latesttryupdate
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -9,11 +6,6 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-<<<<<<< HEAD
-=======
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
->>>>>>> latesttryupdate
 package org.usfirst.frc.team3075.robot;
 
 /**
@@ -22,15 +14,8 @@ package org.usfirst.frc.team3075.robot;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-<<<<<<< HEAD
-<<<<<<< HEAD
 public class RobotMap 
 {
-	
-=======
-public class RobotMap 
-{
->>>>>>> latesttryupdate
 	////chassis////
 	
 	public static final int rearLeft = 1;
@@ -42,40 +27,4 @@ public class RobotMap
     public static final int shifterForward = 6;
     public static final int shifterReverse = 7;
     
-<<<<<<< HEAD
-=======
-public class RobotMap {
-	// For example to map the left and right motors, you could define the
-	// following variables to use with your drivetrain subsystem.
-	// public static int leftMotor = 1;
-	// public static int rightMotor = 2;
-
-	// If you are using multiple modules, make sure to define both the port
-	// number and the module. For example you with a rangefinder:
-	// public static int rangefinderPort = 1;
-	// public static int rangefinderModule = 1;
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
-    ////Intake////
-
-//    public static final int topMotor = 0 
-//    public static final int lowMotor = 0
-//    public static final int conveyorMotor = 0
-    
-<<<<<<< HEAD
->>>>>>> latesttryupdate
-=======
-    
-    ////Elevator////
-    // NOT UPDATED!!!!!!!!!!
-    public static final int bigElevatorMasterMotor = 0;
-    public static final int bigElevatorSlaveMotor = 0;
-    public static final int smallElevatorMotor = 0;
-    
-    public static final int highMicroSwitch = 0;
-    public static final int middleMicroSwitch = 0;
-    
-    
-    
->>>>>>> latesttryupdate
 }
