@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package LibPurple.actuator;
 
 import edu.wpi.first.wpilibj.SpeedController;
@@ -16,9 +15,8 @@ public interface SpeedController3075 extends SpeedController
 	public void setMotorBound(double newMotorBound);
 	
 	public void setSlave(SpeedController3075 slave);
-
 }
-=======
+
 //package LibPurple.actuator;
 //
 //import edu.wpi.first.wpilibj.SpeedController;
@@ -38,4 +36,3 @@ public interface SpeedController3075 extends SpeedController
 //	public void setSlave(SpeedController3075 slave);
 //
 //}
->>>>>>> latesttryupdate
