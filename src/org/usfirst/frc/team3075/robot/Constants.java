@@ -6,11 +6,11 @@ import LibPurple.control.MPController.MPValue;
 public class Constants
 {
 	////chassis/////
-	public static final double distancePerPulse = 16791;
+	public static final double distancePerPulse = 17219;
 	public static final double distancePerAngle = 110.5;
 	
-	public static final double powerRightMaxV = 2;
-	public static final double powerLeftMaxV = 2;
+	public static final double powerRightMaxV = 2.04;
+	public static final double powerLeftMaxV = 2.1;
 	
 	public static final double rightMaxA = 4;
 	public static final double leftMaxA = 4;
@@ -24,14 +24,13 @@ public class Constants
 	public static final PIDvalue rightVelocityPID = new PIDvalue(0, 0, 0, 0);
 	public static final PIDvalue leftVelocityPID = new PIDvalue(0, 0, 0, 0);
 
-
 	public static final PIDvalue rightTurnPID = new PIDvalue(0, 0, 0 , 0);
 	public static final PIDvalue leftTurnPID = new PIDvalue(0, 0, 0 , 0);
 
 	public static final PIDvalue rightPositionPID = new PIDvalue(3, 0.03, 0.0);
 	public static final PIDvalue leftPositionPID = new PIDvalue(3, 0.03, 0.0);
 
-	public static final MPValue rightMPValue = new MPValue(rightPositionPID, 1 / powerLeftMaxV, 0.0666);
+	public static final MPValue rightMPValue = new MPValue(rightPositionPID, 1 / powerRightMaxV, 0.0666);
 	public static final MPValue leftMPValue = new MPValue(leftPositionPID, 1/powerLeftMaxV, 0.0666);
 
 	public static final MPValue rightTurnMP = new MPValue(rightTurnPID, 0, 0);

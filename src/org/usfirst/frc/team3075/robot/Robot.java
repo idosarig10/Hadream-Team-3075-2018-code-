@@ -24,10 +24,6 @@ import javax.swing.text.StyleContext.SmallAttributeSet;
 
 /**
  * The VM is configured to automatically run this class, and to call the
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> latesttryupdate
  * functions corresponding to each mode, as described in the TimedRobot
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the build.properties file in the
@@ -55,6 +51,9 @@ public class Robot extends IterativeRobot
 		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
+		rightMaxV = 0;
+		leftMaxV = 0;
+		
 	}
 
 	/**
@@ -78,18 +77,7 @@ public class Robot extends IterativeRobot
 	 * chooser code works with the Java SmartDashboard. If you prefer the
 	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
 	 * getString code to get the auto name from the text box below the Gyro
-	 *
-<<<<<<< HEAD
-<<<<<<< HEAD
 	 * <p>You can add additional auto modes by adding additional commands to the
-=======
-	 * You can add additional auto modes by adding additional commands to the
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
-	 * <p>You can add additional auto modes by adding additional commands to the
->>>>>>> latesttryupdate
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
 	 */
 	@Override
 	public void autonomousInit() {
@@ -100,18 +88,7 @@ public class Robot extends IterativeRobot
 	}
 
 	/**
-	 * This function is called periodically during autonomous.
-<<<<<<< HEAD
-=======
-		if (autonomousCommand != null)
-			autonomousCommand.start();
-	}
-
-	/**
 	 * This function is called periodically during autonomous
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
->>>>>>> latesttryupdate
 	 */
 	@Override
 	public void autonomousPeriodic() {
@@ -149,7 +126,6 @@ public class Robot extends IterativeRobot
 	}
 
 	/**
->>>>>>> latesttryupdate
 	 * This function is called periodically during test mode.
 	 */
 	@Override
