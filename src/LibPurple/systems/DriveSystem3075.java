@@ -6,20 +6,13 @@ import org.usfirst.frc.team3075.robot.Robot;
 import LibPurple.control.MPController;
 import LibPurple.control.MPController.MPValue;
 import LibPurple.control.PIDvalue;
-<<<<<<< HEAD
 import LibPurple.control.TrajectoryFile;
 import LibPurple.control.TrajectorySMP;
-<<<<<<< HEAD
-=======
-import LibPurple.sensors.Camera3075;
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
 import LibPurple.control.Trajectory3075;
 import LibPurple.control.Trajectory3075.Type;
 import LibPurple.control.TrajectoryFile;
 import LibPurple.control.TrajectorySMP;
 import LibPurple.control.TrajectoryTMP;
->>>>>>> latesttryupdate
 import LibPurple.sensors.ConsoleJoystick;
 import LibPurple.sensors.Encoder3075;
 import LibPurple.systems.DriveSystem3075.DrivingState;
@@ -56,29 +49,8 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		Voltage, VelocityClosedLoop, DistanceMotionProfiled;
 	}
-<<<<<<< HEAD
-	
-	DrivingState state = DrivingState.Voltage;
-
-//	protected Camera3075 camera;
-	
-	protected SpeedController rightMotor;
-	protected SpeedController leftMotor;
-	
-	private Encoder3075 rightEncoder;
-	private Encoder3075 leftEncoder;
-	
-	private PIDController rightPID;
-	protected PIDvalue rightPIDValue;
-	
-	private PIDController leftPID;
-	private PIDvalue leftPIDValue;
-	
-=======
 
 	DrivingState state = DrivingState.Voltage;
-
-	//	protected Camera3075 camera;
 
 	protected SpeedController rightMotor;
 	protected SpeedController leftMotor;
@@ -92,18 +64,13 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	private PIDController leftPID;
 	private PIDvalue leftPIDValue;
 
->>>>>>> latesttryupdate
 	protected MPController rightMP;
 	protected MPValue rightMPValue;
 	protected MPValue rightTurnMPValue;
 	protected MPController leftMP;
 	protected MPValue leftMPValue;
 	protected MPValue leftTurnMPValue;
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	protected double rightMaxV;
 	protected double leftMaxV;
 	protected double rightMaxA;
@@ -116,11 +83,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	protected double positionTolerance;
 	protected double angleTolerance;
 	protected double robotWidth;
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 
 	protected void initialize(SpeedController rightMotor, SpeedController leftMotor,
 			Encoder3075 rightEncoder, Encoder3075 leftEncoder)
@@ -129,26 +92,15 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		this.leftMotor = leftMotor;
 		this.rightEncoder = rightEncoder;
 		this.leftEncoder = leftEncoder;
-<<<<<<< HEAD
-		
-		this.rightEncoder.setPIDSourceType(PIDSourceType.kRate);
-		this.leftEncoder.setPIDSourceType(PIDSourceType.kRate);
-		
-		leftMP = new MPController(leftMPValue, leftMotor, leftEncoder);
-		rightMP = new MPController(rightMPValue, rightMotor, rightEncoder);
-		
-	}
-	
-=======
 
 		this.rightEncoder.setPIDSourceType(PIDSourceType.kRate);
 		this.leftEncoder.setPIDSourceType(PIDSourceType.kRate);
 
 		leftMP = new MPController(leftMPValue, leftMotor, leftEncoder);
 		rightMP = new MPController(rightMPValue, rightMotor, rightEncoder);
+
 	}
 
->>>>>>> latesttryupdate
 
 	@Override
 	protected void initDefaultCommand()
@@ -171,11 +123,6 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		else if(state == DrivingState.VelocityClosedLoop)
 		{
 			double maxV = Math.min(rightMaxV, leftMaxV);
-<<<<<<< HEAD
-			
-=======
-
->>>>>>> latesttryupdate
 			if(rightValue == 0)
 			{
 				rightPID.disable();
@@ -183,11 +130,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 			}
 			else
 				rightPID.enable();	
-<<<<<<< HEAD
-			
-=======
 
->>>>>>> latesttryupdate
 			if(leftValue == 0)
 			{
 				leftPID.disable();
@@ -195,20 +138,14 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 			}
 			else
 				leftPID.enable();
-<<<<<<< HEAD
-			
-=======
 
->>>>>>> latesttryupdate
+
 			rightPID.setSetpoint(rightValue * maxV);
 			leftPID.setSetpoint(leftValue * maxV);
 		}
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
+
 	/**
 	 * switched the drive system state from its current state to a new state 
 	 * @param newState - the new state, can get "Voltage", "VelocityClosedLoop","DistanceMotionProfiled" 
@@ -216,11 +153,6 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	public void enterState(DrivingState newState)
 	{
 		this.state = newState;
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> latesttryupdate
 		switch(state)
 		{
 		case Voltage:
@@ -238,26 +170,15 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 			leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 			setPIDEnabled(false);
 			setMPEnabled(true);
-<<<<<<< HEAD
-=======
 			Utils.print("mp enabled");
->>>>>>> latesttryupdate
 			break;
 		default:
 			setPIDEnabled(false);
 			setMPEnabled(false);
 			break;
-<<<<<<< HEAD
-			
-		}
-	}
-	
-=======
-
 		}
 	}
 
->>>>>>> latesttryupdate
 	/**
 	 * enable or disables the PID
 	 * @param enabled - boolean that sets the PID
@@ -275,11 +196,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 			leftPID.disable();
 		}
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	/**
 	 * enable or disable the MP
 	 * @param enabled - boolean that sets the MP
@@ -296,15 +213,8 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 			rightMP.disable();
 			leftMP.disable();
 		}
-<<<<<<< HEAD
-		
-	}
-	
-=======
-
 	}
 
->>>>>>> latesttryupdate
 	/**
 	 * resets the encoders
 	 */
@@ -315,38 +225,23 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		leftPID.reset();
 		rightPID.reset();
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public Command arcadeDrive(Joystick joystick)
 	{
 		return new ArcadeDriveCommand(this, joystick);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
+
 	public Command xboxArcadeDrive(ConsoleJoystick stick)
 	{
 		return new XboxArcade(this, stick);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public Command tankDrive(Joystick rightJoystick, Joystick leftJoystick)
 	{
 		return new TankDriveCommand(this, rightJoystick, leftJoystick);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	/**
 	 * Toggles the drive system state between the two states given.
 	 * 
@@ -357,11 +252,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return new StateToggle(this, state1, state2);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	/**
 	 * drives straight for a given distance
 	 * @param distance - the distance to drive straight
@@ -371,11 +262,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		double maxA = Math.min(rightMaxA, leftMaxA);
 		return new DriveDistance(this, distance, distance, false, maxA);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	@Deprecated
 	/**
 	 * drives straight for a given distance but with a limit on the acceleration
@@ -386,13 +273,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return new DriveDistance(this, distance, distance, false, maxA);
 	}
-<<<<<<< HEAD
-	
-	
-=======
 
-
->>>>>>> latesttryupdate
 	/**
 	 * drives straight for a given distance, does not stop the command when the distance is reached
 	 * @param distance - the distance to drive
@@ -402,42 +283,16 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		double maxA = Math.min(rightMaxA, leftMaxA);
 		return new DriveDistance(this, distance, distance, true, maxA);
 	}
-	
-<<<<<<< HEAD
-=======
+
 	public Command driveStraightTrapizodial(double distance, boolean endless)
 	{
 		return new DriveDistance(this, distance, distance, endless, getMaxA(), getMaxA(), Type.TrapizoidalMotionProfile, getMaxV(), getMaxV());
 	}
-	
 
->>>>>>> latesttryupdate
 	/**
 	 * drives in a circular motion
 	 * @param radius - the radius of the circle 
 	 * @param angle - the angle of the motion, positive angle is left, negative is right
-<<<<<<< HEAD
-	 */
-	public Command driveCurve(double radius, double angle, boolean clockwise)
-	{
-		double leftRadius = clockwise ? radius +  (robotWidth / 2) : radius - (robotWidth / 2);
-		double rightRadius = clockwise ? radius -  (robotWidth / 2) : radius + (robotWidth / 2);
-		
-		double leftDistance = Math.toRadians(angle) * leftRadius; 
-		double rightDistance = Math.toRadians(angle) * rightRadius;
-				
-		double leftMaxA = !clockwise ? 
-				getMaxA() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) 
-				: getMaxA(); 
-		double rightMaxA = clockwise ? 
-				getMaxA() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) 
-				: getMaxA(); 
-		
-		
-		return new DriveDistance(this, leftDistance, rightDistance, false, leftMaxA, rightMaxA);
-	}
-	
-=======
 	 * @param clockwise - true for driving on clockwise direction on the circle.
 	 */
 	public Command driveArc(double radius, double angle, boolean clockwise)
@@ -457,14 +312,13 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		double leftMaxV = !clockwise ? getMaxV() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) : getMaxV();
 		//robot's right side max velocity
 		double rightMaxV = clockwise ? getMaxV() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) : getMaxV();
-		
+
 		Utils.print("left max v:" + (leftMaxV/2));
 		Utils.print("right max v: " + (rightMaxV/2));
-		
+
 		return new DriveDistance(this, leftDistance, rightDistance, false, leftMaxA/2, rightMaxA/2, Type.TrapizoidalMotionProfile, leftMaxV/2, rightMaxV/2);
 	}
 
->>>>>>> latesttryupdate
 	/**
 	 * drives a specific path, using given files
 	 * @param rightFile - the file to the right engine
@@ -475,17 +329,6 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return new Drive2D(this, rightFile, leftFile, false, false);
 	}
-<<<<<<< HEAD
-	
-	public Command drive2D(String rightFile, String leftFile, boolean reversed)
-	{
-			if(reversed)
-				return new Drive2D(this, leftFile, rightFile, false, reversed);
-			else
-				return new Drive2D(this, rightFile, leftFile, false, reversed);
-	}
-	
-=======
 
 	public Command drive2D(String rightFile, String leftFile, boolean reversed)
 	{
@@ -495,7 +338,6 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 			return new Drive2D(this, rightFile, leftFile, false, reversed);
 	}
 
->>>>>>> latesttryupdate
 	/**
 	 * turns a given angle, stays in the same position
 	 * @param angle - the angle to turn
@@ -505,20 +347,12 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{			
 		return new TurnAngle(this, angle,  false);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public Command turnAngle(double angle, double maxA)
 	{			
 		return new TurnAngle(this, angle,  false, maxA);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	/**
 	 * turns a given angle, stays in the same position, does not stop the command when the angle is reached
 	 * @param angle
@@ -528,11 +362,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return new TurnAngle(this, angle,  true);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	/**
 	 * sets the PID values
 	 * @param leftPIDValue - the values for the left side
@@ -542,11 +372,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		this.leftPIDValue = leftPIDValue;
 		this.rightPIDValue = rightPIDValue;
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> latesttryupdate
 		if(this.leftPID != null)
 			leftPID.setPID(leftPIDValue.kP, leftPIDValue.kI, leftPIDValue.kD, leftPIDValue.kF);
 		else
@@ -557,11 +383,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		else
 			rightPID = new PIDController(rightPIDValue.kP, rightPIDValue.kI, rightPIDValue.kD, rightPIDValue.kF, rightEncoder, rightMotor);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	/**
 	 * sets the MP values
 	 * @param leftMPValue - the values for the left side
@@ -571,11 +393,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		this.leftMPValue = leftMPValue;
 		this.rightMPValue = rightMPValue;
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> latesttryupdate
 		leftMP.setValues(leftMPValue);
 		rightMP.setValues(rightMPValue);
 	}
@@ -589,11 +407,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		leftPID.setAbsoluteTolerance(velocityTolerance);
 		rightPID.setAbsoluteTolerance(velocityTolerance);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	/**
 	 * sets the tolerance for the distance
 	 * @param tolerance - the tolerance to set
@@ -603,20 +417,12 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		rightMP.setTolerance(tolerance);
 		leftMP.setTolerance(tolerance);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public double getAngle()
 	{
 		return (leftEncoder.getDistance() - rightEncoder.getDistance()) / (2 * distancePerAngle);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public PIDvalue getLeftPIDValue() 
 	{
 		return leftPIDValue;
@@ -651,11 +457,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		this.leftTurnMPValue = leftTurnMPValue;
 		this.rightTurnMPValue = rightTurnMPValue;
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> latesttryupdate
 		leftMP.setValues(leftTurnMPValue);
 		rightMP.setValues(rightTurnMPValue);
 	}
@@ -664,57 +466,33 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return rightMaxV;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public double getLeftTurnMaxA()
 	{
 		return leftTurnMaxA;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public double getRightTurnMaxA()
 	{
 		return rightTurnMaxA;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public double getLeftTurnMaxV()
 	{
 		return leftTurnMaxV;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public double getRightTurnMaxV()
 	{
 		return rightTurnMaxV;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public void setMaxV(double rightMaxV, double leftMaxV)
 	{
 		this.rightMaxV = rightMaxV;
 		this.leftMaxV = leftMaxV;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public void setTurnMaxV(double rightTurnMaxV, double leftTurnMaxV)
 	{
 		this.rightTurnMaxV = rightTurnMaxV;
@@ -725,33 +503,19 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return leftMaxV;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public void setMaxA(double rightMaxA, double leftMaxA)
 	{
 		this.rightMaxA = rightMaxA;
 		this.leftMaxA = leftMaxA;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public void setTurnMaxA(double rightTurnMaxA, double leftTurnMaxA)
 	{
 		this.rightTurnMaxA = rightTurnMaxA;
 		this.leftTurnMaxA = leftTurnMaxA;
 	}
-<<<<<<< HEAD
-	
-	
-=======
 
-
->>>>>>> latesttryupdate
 	public double getRightMaxA() {
 		return rightMaxA;
 	}
@@ -764,11 +528,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return rightMP;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public MPController getLeftMPController()
 	{
 		return leftMP;
@@ -778,23 +538,16 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return rightMP.getTolerance();
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public double getMaxA(){
 		return Math.min(this.leftMaxA, this.rightMaxA);
 	}
-	
-<<<<<<< HEAD
-=======
+
 	public double getMaxV()
 	{
 		return Math.min(leftMaxV, rightMaxV);
 	}
 
->>>>>>> latesttryupdate
 	public DrivingState getState(){
 		return state;
 	}
@@ -803,11 +556,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return distancePerAngle;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public double getRobotWidth()
 	{
 		return robotWidth;
@@ -822,32 +571,17 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return (rightPID.getError() + leftPID.getError()) / 2;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	public double getAngleTolerance()
 	{
 		return angleTolerance;
 	}
-<<<<<<< HEAD
-	
-	private ITable m_table;
-	
-	public void initTable(ITable subtable) {
-		m_table = subtable;
-		updateTable();
-		
-=======
 
 	private ITable m_table;
 
 	public void initTable(ITable subtable) {
 		m_table = subtable;
 		updateTable();
-
->>>>>>> latesttryupdate
 	}
 
 	public ITable getTable() {
@@ -859,23 +593,6 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		// TODO Auto-generated method stub
 		return "Drive System";
 	}
-<<<<<<< HEAD
-	
-	public void updateTable() 
-	{
-	    if (m_table != null) 
-	    {
-	      m_table.putNumber("Right Rate", rightEncoder.getRate());
-	      m_table.putNumber("Left Rate", leftEncoder.getRate());
-	      m_table.putNumber("Right Distance", rightEncoder.getDistance());
-	      m_table.putNumber("Left Distance",  leftEncoder.getDistance());
-	      m_table.putNumber("Right Rate Setpoint", rightPID.getSetpoint());
-	      m_table.putNumber("Left Rate Setpoint", leftPID.getSetpoint());
-	      m_table.putNumber("Angle", getAngle());
-	      m_table.putString("Driving State", state + "");
-	      
-	    }
-=======
 
 	public void updateTable() 
 	{
@@ -891,22 +608,11 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 			m_table.putString("Driving State", state + "");
 
 		}
->>>>>>> latesttryupdate
 	}
 }
 
 class XboxArcade extends Command
 {
-<<<<<<< HEAD
-	
-	DriveSystem3075 driveSystem;
-	ConsoleJoystick stick;
-	
-	private double leftValue;
-    private double rightValue;
-    private double last = 0;
-	
-=======
 
 	DriveSystem3075 driveSystem;
 	ConsoleJoystick stick;
@@ -915,26 +621,16 @@ class XboxArcade extends Command
 	private double rightValue;
 	private double last = 0;
 
->>>>>>> latesttryupdate
 	public XboxArcade(DriveSystem3075 driveSystem, ConsoleJoystick stick) {
 		requires(driveSystem);
 		this.driveSystem = driveSystem;
 		this.stick = stick;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	@Override
 	protected void initialize() 
 	{
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> latesttryupdate
 	}
 
 	@Override
@@ -942,24 +638,6 @@ class XboxArcade extends Command
 	{
 		double throttle = stick.yGet();
 		double turn = Math.pow(stick.xGet(), 2) * Math.signum(stick.xGet());
-<<<<<<< HEAD
-		
-//		double throttle = stick.getDrivingY();
-//		double turn = stick.getRawAxis(0);
-		throttle = Utils.deadband(throttle, 0.01);
-//		turn = Utils.deadband(turn, 0.3);
-		
-		throttle = Utils.accellimit(throttle, last, 0.2);
-        leftValue = (throttle + turn);
-        rightValue = (throttle - turn);
-
-        driveSystem.set(rightValue, leftValue);
-        
-        last = throttle;
-        
-	}
-	
-=======
 
 		//		double throttle = stick.getDrivingY();
 		//		double turn = stick.getRawAxis(0);
@@ -976,65 +654,35 @@ class XboxArcade extends Command
 
 	}
 
->>>>>>> latesttryupdate
+
 	@Override
 	protected boolean isFinished()
 	{
 		// TODO Auto-generated method stub
 		return false;
 	}
-<<<<<<< HEAD
-	
-	
-=======
 
-
->>>>>>> latesttryupdate
 	@Override
 	protected void end() 
 	{
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
-		
-	}
-	
-=======
-
 	}
 
->>>>>>> latesttryupdate
 	@Override
 	protected void interrupted() 
 	{
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
-		
 	}
-
-	
-=======
-
-	}
-
-
->>>>>>> latesttryupdate
 }
 
 class ArcadeDriveCommand extends Command
 {
 	DriveSystem3075 driveSystem;
 	Joystick stick;
-<<<<<<< HEAD
-	
-	private double leftValue;
-    private double rightValue;
-    
-=======
 
 	private double leftValue;
 	private double rightValue;
 
->>>>>>> latesttryupdate
 	public ArcadeDriveCommand(DriveSystem3075 driveSystem, Joystick stick) 
 	{
 		requires(driveSystem);
@@ -1046,11 +694,6 @@ class ArcadeDriveCommand extends Command
 	protected void initialize() 
 	{
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> latesttryupdate
 	}
 
 	@Override
@@ -1058,60 +701,30 @@ class ArcadeDriveCommand extends Command
 	{
 		double throttle = stick.getRawAxis(AxisType.kY.value);
 		double turn = stick.getRawAxis(AxisType.kX.value);
-<<<<<<< HEAD
-		
-        leftValue = throttle + turn;
-        rightValue = throttle - turn;
-
-        driveSystem.set(rightValue, leftValue);
-        
-	}
-	
-=======
 
 		leftValue = throttle + turn;
 		rightValue = throttle - turn;
 
 		driveSystem.set(rightValue, leftValue);
-
 	}
 
->>>>>>> latesttryupdate
 	@Override
 	protected boolean isFinished()
 	{
 		// TODO Auto-generated method stub
 		return false;
 	}
-<<<<<<< HEAD
-	
-	
-=======
 
-
->>>>>>> latesttryupdate
 	@Override
 	protected void end() 
 	{
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
-		
-	}
-	
-=======
-
 	}
 
->>>>>>> latesttryupdate
 	@Override
 	protected void interrupted() 
 	{
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> latesttryupdate
 	}
 
 }
@@ -1121,11 +734,7 @@ class TankDriveCommand extends Command
 	DriveSystem3075 driveSystem;
 	Joystick rightStick;
 	Joystick leftStick;
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> latesttryupdate
 	public TankDriveCommand(DriveSystem3075 driveSystem, Joystick rightStick, Joystick leftStick) 
 	{
 		requires(driveSystem);
@@ -1138,93 +747,46 @@ class TankDriveCommand extends Command
 	protected void initialize() 
 	{
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> latesttryupdate
 	}
 
 	@Override
 	protected void execute() 
 	{
-<<<<<<< HEAD
-        driveSystem.set(rightStick.getY(), leftStick.getY());
-	}
-	
-=======
 		driveSystem.set(rightStick.getY(), leftStick.getY());
 	}
 
->>>>>>> latesttryupdate
 	@Override
 	protected boolean isFinished()
 	{
 		// TODO Auto-generated method stub
 		return false;
 	}
-<<<<<<< HEAD
-	
-	
-=======
 
-
->>>>>>> latesttryupdate
 	@Override
 	protected void end() 
 	{
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
-		
-	}
-	
-=======
-
 	}
 
->>>>>>> latesttryupdate
 	@Override
 	protected void interrupted() 
 	{
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> latesttryupdate
 	}
-
 }
 
 class TurnAngle extends Command
 {
-<<<<<<< HEAD
-	
-	DriveSystem3075 driveSystem;
-	MPController rightMP;
-	MPController leftMP;
-	
-=======
 
 	DriveSystem3075 driveSystem;
 	MPController rightMP;
 	MPController leftMP;
 
->>>>>>> latesttryupdate
 	boolean endless;
 	double leftDistance;
 	double rightDistance;
 	double angle;
 	double maxA;
-<<<<<<< HEAD
-	
-	DrivingState prevState;
-	
-	public TurnAngle(DriveSystem3075 driveSystem, double angle, boolean endless)
-	{
-		requires(driveSystem);
-		
-=======
 
 	DrivingState prevState;
 
@@ -1232,25 +794,11 @@ class TurnAngle extends Command
 	{
 		requires(driveSystem);
 
->>>>>>> latesttryupdate
 		this.driveSystem = driveSystem;
 		this.leftDistance = driveSystem.distancePerAngle * angle;
 		this.rightDistance = -driveSystem.distancePerAngle * angle;
 		this.angle = angle;
 		this.endless = endless;
-<<<<<<< HEAD
-		
-		rightMP = driveSystem.getRightMPController();
-		leftMP = driveSystem.getLeftMPController();
-		
-		this.maxA = Math.min(driveSystem.getLeftTurnMaxA(), driveSystem.getRightTurnMaxA());		
-	}
-	
-	public TurnAngle(DriveSystem3075 driveSystem, double angle, boolean endless, double maxA)
-	{		
-		requires(driveSystem);
-		
-=======
 
 		rightMP = driveSystem.getRightMPController();
 		leftMP = driveSystem.getLeftMPController();
@@ -1258,44 +806,28 @@ class TurnAngle extends Command
 		this.maxA = Math.min(driveSystem.getLeftTurnMaxA(), driveSystem.getRightTurnMaxA());		
 	}
 
+
 	public TurnAngle(DriveSystem3075 driveSystem, double angle, boolean endless, double maxA)
 	{		
 		requires(driveSystem);
 
->>>>>>> latesttryupdate
 		this.driveSystem = driveSystem;
 		this.leftDistance = driveSystem.distancePerAngle * angle;
 		this.rightDistance = -driveSystem.distancePerAngle * angle;
 		this.angle = angle;
 		this.endless = endless;
 		this.maxA = maxA;
-<<<<<<< HEAD
-		
-		rightMP = driveSystem.getRightMPController();
-		leftMP = driveSystem.getLeftMPController();
-	}
-	
-=======
 
 		rightMP = driveSystem.getRightMPController();
 		leftMP = driveSystem.getLeftMPController();
 	}
 
->>>>>>> latesttryupdate
+
 	@Override
 	protected void initialize() 
 	{
 		Utils.print("started");
 
-<<<<<<< HEAD
-		
-		prevState = driveSystem.state;
-		driveSystem.reset();
-		
-		driveSystem.setTurnMPValues(driveSystem.leftTurnMPValue, driveSystem.rightTurnMPValue);
-		driveSystem.setTolerance(driveSystem.angleTolerance * driveSystem.distancePerAngle);
-		
-=======
 
 		prevState = driveSystem.state;
 		driveSystem.reset();
@@ -1303,16 +835,11 @@ class TurnAngle extends Command
 		driveSystem.setTurnMPValues(driveSystem.leftTurnMPValue, driveSystem.rightTurnMPValue);
 		driveSystem.setTolerance(driveSystem.angleTolerance * driveSystem.distancePerAngle);
 
->>>>>>> latesttryupdate
 		rightMP.setTrajectory(new TrajectorySMP(rightDistance, maxA));
 		leftMP.setTrajectory(new TrajectorySMP(leftDistance, maxA));
 		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
 	@Override
 	protected void execute() 
 	{
@@ -1326,11 +853,6 @@ class TurnAngle extends Command
 		{
 			return false;
 		}
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> latesttryupdate
 		return Utils.inRange(driveSystem.getAngle(), this.angle, driveSystem.angleTolerance);
 	}
 
@@ -1347,35 +869,10 @@ class TurnAngle extends Command
 	{
 		end();
 	}
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> latesttryupdate
 }
 
 class DriveDistance extends Command
 {
-<<<<<<< HEAD
-	
-	DriveSystem3075 driveSystem;
-	MPController rightMP;
-	MPController leftMP;
-	
-	boolean endless;
-	double leftDistance;
-	double rightDistance;
-	
-	double leftMaxA, rightMaxA;
-	
-	DrivingState prevState;
-
-	
-	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double maxA)
-	{
-		requires(driveSystem);
-		
-=======
 
 	DriveSystem3075 driveSystem;
 	MPController rightMP;
@@ -1386,7 +883,6 @@ class DriveDistance extends Command
 	double rightDistance;
 
 	double leftMaxA, rightMaxA;
-	
 	double leftMaxV, rightMaxV;
 
 	DrivingState prevState;
@@ -1399,38 +895,11 @@ class DriveDistance extends Command
 		requires(driveSystem);
 
 		this.MPType = Type.SinosoidalMotionProfile;
->>>>>>> latesttryupdate
 		this.driveSystem = driveSystem;
 		this.leftDistance = leftDistance;
 		this.rightDistance = rightDistance;
 		this.leftMaxA = maxA;
 		this.rightMaxA = maxA;
-<<<<<<< HEAD
-		
-		this.endless = endless;
-		
-		rightMP = driveSystem.getRightMPController();
-		leftMP = driveSystem.getLeftMPController();
-		
-	}
-	
-	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA)
-	{
-		requires(driveSystem);
-		
-		this.driveSystem = driveSystem;
-		this.leftDistance = leftDistance;
-		this.rightDistance = rightDistance;
-		
-		this.leftMaxA = leftmaxA;
-		this.rightMaxA = rightMaxA;
-		this.endless = endless;
-		
-		rightMP = driveSystem.getRightMPController();
-		leftMP = driveSystem.getLeftMPController();
-	}
-	
-=======
 
 		this.endless = endless;
 
@@ -1443,7 +912,6 @@ class DriveDistance extends Command
 	{
 		requires(driveSystem);
 
-		this.MPType = Type.SinosoidalMotionProfile;
 		this.driveSystem = driveSystem;
 		this.leftDistance = leftDistance;
 		this.rightDistance = rightDistance;
@@ -1455,6 +923,7 @@ class DriveDistance extends Command
 		rightMP = driveSystem.getRightMPController();
 		leftMP = driveSystem.getLeftMPController();
 	}
+
 
 	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA, Type MPType, double leftMaxV, double rightMaxV)
 	{
@@ -1467,10 +936,10 @@ class DriveDistance extends Command
 
 		this.leftMaxA = leftmaxA;
 		this.rightMaxA = rightMaxA;
-		
+
 		this.leftMaxV = leftMaxV;
 		this.rightMaxV = rightMaxV;
-		
+
 		this.endless = endless;
 
 		rightMP = driveSystem.getRightMPController();
@@ -1478,26 +947,21 @@ class DriveDistance extends Command
 	}
 
 
->>>>>>> latesttryupdate
 	@Override
 	protected void initialize() 
 	{
 		prevState = driveSystem.state;
 		driveSystem.reset();
-<<<<<<< HEAD
-		
-		driveSystem.setMPValues(driveSystem.leftMPValue, driveSystem.rightMPValue);
-		driveSystem.setTolerance(driveSystem.positionTolerance);
-		
-		rightMP.setTrajectory(new TrajectorySMP(rightDistance, rightMaxA));
-		leftMP.setTrajectory(new TrajectorySMP(leftDistance, leftMaxA));
-		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
-	}
-	
-=======
 
 		driveSystem.setMPValues(driveSystem.leftMPValue, driveSystem.rightMPValue);
 		driveSystem.setTolerance(driveSystem.positionTolerance);
+
+		rightMP.setTrajectory(new TrajectorySMP(rightDistance, rightMaxA));
+		leftMP.setTrajectory(new TrajectorySMP(leftDistance, leftMaxA));
+		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
+
+
+
 
 		if(this.MPType == Type.SinosoidalMotionProfile)
 		{
@@ -1512,7 +976,6 @@ class DriveDistance extends Command
 		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
 	}
 
->>>>>>> latesttryupdate
 	@Override
 	protected void execute() 
 	{
@@ -1526,11 +989,6 @@ class DriveDistance extends Command
 		{
 			return false;
 		}
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> latesttryupdate
 		return leftMP.isTimeUp() && rightMP.isTimeUp() && rightMP.onTarget() && leftMP.onTarget();
 	}
 
@@ -1547,43 +1005,20 @@ class DriveDistance extends Command
 	{
 		end();
 	}
-<<<<<<< HEAD
-
-	
-=======
->>>>>>> latesttryupdate
 }
 
 
 class Drive2D extends Command
 {
-<<<<<<< HEAD
-	
-	DriveSystem3075 driveSystem;
-	MPController rightMP;
-	MPController leftMP;
-	
-=======
 
 	DriveSystem3075 driveSystem;
 	MPController rightMP;
 	MPController leftMP;
 
->>>>>>> latesttryupdate
 	boolean endless;
 	boolean reversed;
 	String rightMotorFile;
 	String leftMotorFile;
-<<<<<<< HEAD
-	
-	DrivingState prevState;
-
-	
-	public Drive2D(DriveSystem3075 driveSystem, String rightMotorFile, String leftMotorFile, boolean endless, boolean reversed)
-	{
-		requires(driveSystem);
-		
-=======
 
 	DrivingState prevState;
 
@@ -1592,77 +1027,31 @@ class Drive2D extends Command
 	{
 		requires(driveSystem);
 
->>>>>>> latesttryupdate
 		this.driveSystem = driveSystem;
 		this.rightMotorFile = rightMotorFile;
 		this.leftMotorFile = leftMotorFile;
 		this.endless = endless;
 		this.reversed = reversed;
-<<<<<<< HEAD
-		
-		rightMP = driveSystem.getRightMPController();
-		leftMP = driveSystem.getLeftMPController();
-		
-	}
-	
-=======
 
 		rightMP = driveSystem.getRightMPController();
 		leftMP = driveSystem.getLeftMPController();
 
 	}
-
->>>>>>> latesttryupdate
 	@Override
 	protected void initialize() 
 	{
 
 		prevState = driveSystem.state;
 		driveSystem.reset();
-<<<<<<< HEAD
-		
-		driveSystem.setMPValues(driveSystem.leftMPValue, driveSystem.rightMPValue);
-		driveSystem.setTolerance(driveSystem.positionTolerance);
-		
-=======
 
 		driveSystem.setMPValues(driveSystem.leftMPValue, driveSystem.rightMPValue);
 		driveSystem.setTolerance(driveSystem.positionTolerance);
-
->>>>>>> latesttryupdate
 		rightMP.setTrajectory(new TrajectoryFile(rightMotorFile, reversed));
 		leftMP.setTrajectory(new TrajectoryFile(leftMotorFile, reversed));
 		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> latesttryupdate
-	@Override
-	protected void execute() 
-	{
-		// TODO Auto-generated method stub
-	}
 
-	@Override
-	protected boolean isFinished() 
-	{
-		if(endless)
-		{
-			return false;
-		}
-<<<<<<< HEAD
-		
-		return rightMP.isTimeUp();
-	}
-	
-=======
-
-		return rightMP.isTimeUp();
-	}
-
->>>>>>> latesttryupdate
 	@Override
 	protected void end() 
 	{
@@ -1677,31 +1066,21 @@ class Drive2D extends Command
 	{
 		end();
 	}
-
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> latesttryupdate
+	@Override
+	protected boolean isFinished() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
 
 class StateToggle extends InstantCommand
 {
 	DriveSystem3075.DrivingState state1, state2;
 	DriveSystem3075 driveSystem;
-<<<<<<< HEAD
-	
 
 	public StateToggle(DriveSystem3075 driveSystem, DrivingState state1, DrivingState state2) 
 	{
 //		requires(driveSystem);
-=======
-
-
-	public StateToggle(DriveSystem3075 driveSystem, DrivingState state1, DrivingState state2) 
-	{
-		//		requires(driveSystem);
->>>>>>> latesttryupdate
 		this.driveSystem = driveSystem;
 		this.state1 = state1;
 		this.state2 = state2;

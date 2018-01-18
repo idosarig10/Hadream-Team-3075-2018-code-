@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> latesttryupdate
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -26,22 +22,11 @@ import org.usfirst.frc.team3075.robot.Robot;
 
 /**
  *
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
->>>>>>> latesttryupdate
  */
 public class ExampleCommand extends Command {
 	public ExampleCommand() {
 		// Use requires() here to declare subsystem dependencies
-<<<<<<< HEAD
-<<<<<<< HEAD
 		requires(Robot.kExampleSubsystem);
-=======
-		requires(Robot.exampleSubsystem);
->>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
-=======
-		requires(Robot.kExampleSubsystem);
->>>>>>> latesttryupdate
 	}
 
 	// Called just before this Command runs the first time
