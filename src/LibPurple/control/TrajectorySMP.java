@@ -15,15 +15,25 @@ public class TrajectorySMP extends Trajectory3075
 	private double distance;
 	private double direction;
 	
+<<<<<<< HEAD
+	public TrajectorySMP(double distance, double MAX_A)
+=======
 	public TrajectorySMP(double distance, double maxA)
+>>>>>>> latesttryupdate
 	{
 		this.direction = Math.signum(distance);
 		this.setpoint = new Setpoint();
 		
 		this.distance = distance;
+<<<<<<< HEAD
+		this.maxA = MAX_A;
+		
+		T = Math.sqrt((Math.abs(distance * Math.PI * 2)) / MAX_A);
+=======
 		this.maxA = maxA;
 		
 		T = Math.sqrt((Math.abs(distance * Math.PI * 2)) / maxA);
+>>>>>>> latesttryupdate
 		K = (2 * Math.PI) / T;
 	}
 	
@@ -53,10 +63,13 @@ public class TrajectorySMP extends Trajectory3075
 	{
 		this.distance = distance;
 	}
+<<<<<<< HEAD
+=======
 
 	@Override
 	public double getDirection() {
 		// TODO Auto-generated method stub
 		return this.direction;
 	}
+>>>>>>> latesttryupdate
 }

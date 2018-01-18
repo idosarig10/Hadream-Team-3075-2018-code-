@@ -42,8 +42,11 @@ public abstract class Trajectory3075
 	
 	public abstract double getTotalTime();
 	
+<<<<<<< HEAD
+=======
 	public abstract double getDirection();
 	
+>>>>>>> latesttryupdate
 	public Setpoint getSetpoint() 
 	{
 		return setpoint;

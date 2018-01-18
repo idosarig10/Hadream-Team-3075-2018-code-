@@ -9,8 +9,18 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
+<<<<<<< HEAD
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+<<<<<<< HEAD
+=======
+>>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
+=======
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+>>>>>>> latesttryupdate
+=======
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+>>>>>>> latesttryupdate
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
 
@@ -82,7 +92,11 @@ public class MPController implements Sendable
 	private Trajectory3075 trajectory;
 	
 	private double tolerance = 0.1;
+<<<<<<< HEAD
+	private boolean enabled = false; // fixed you <3
+=======
 	private boolean enabled = false; // fixed you alon <3
+>>>>>>> latesttryupdate
 	private java.util.Timer controllerLoop;
 	private final double period = 0.01; 
 	
@@ -128,8 +142,11 @@ public class MPController implements Sendable
 		this.lastError = 0;
 		this.errorIntegral = 0;
 		startTime = Timer.getFPGATimestamp();
+<<<<<<< HEAD
+=======
 		Utils.print("total time: " + trajectory.getTotalTime() + " distance: " + trajectory.getDistance());
 		Utils.print("direction: " + trajectory.getDirection());
+>>>>>>> latesttryupdate
     }
 
 	public void calculate()
@@ -232,8 +249,11 @@ public class MPController implements Sendable
 	{
 		synchronized(currTask)
 		{
+<<<<<<< HEAD
+=======
 			Utils.print(currTask.toString());
 			Utils.print("task is enabled: " + this.enabled);
+>>>>>>> latesttryupdate
 			if(this.enabled == false)
 			{
 				this.enabled = true;
@@ -324,6 +344,10 @@ public class MPController implements Sendable
 	      	m_table.putNumber("Position Error", getPositionError());
 	    }
 	}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> latesttryupdate
 
 	@Override
 	public String getName() {
@@ -354,6 +378,11 @@ public class MPController implements Sendable
 		// TODO Auto-generated method stub
 		
 	}
+<<<<<<< HEAD
+=======
+>>>>>>> 29cf4a5bc79be43519cab52197919762ce787713
+=======
+>>>>>>> latesttryupdate
 	
 	public Trajectory3075.Setpoint getSetpoint() {
 		return setpoint;
