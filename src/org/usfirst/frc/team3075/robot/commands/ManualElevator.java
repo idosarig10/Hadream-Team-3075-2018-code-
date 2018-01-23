@@ -7,19 +7,14 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ActiveIntake extends Command 
+public class ManualElevator extends Command 
 {
 
-	private double conveyorSpeed;
-	private double wheelsSpeed;
-	
-    public ActiveIntake(double conveyorSpeed, double wheelsSpeed) 
+    public ManualElevator() 
     {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.intake);
-    	this.conveyorSpeed = conveyorSpeed;
-    	this.wheelsSpeed = wheelsSpeed;
+    	requires(Robot.elevator);
     }
 
     // Called just before this Command runs the first time
@@ -30,9 +25,8 @@ public class ActiveIntake extends Command
     // Called repeatedly when this Command is scheduled to run
     protected void execute() 
     {
-    	Robot.intake.setConveyorSpeed(conveyorSpeed);
-    	Robot.intake.setLeftWheelSpeed(wheelsSpeed);
-    	Robot.intake.setRightWheelSpeed(wheelsSpeed);
+    	Robot.elevator.setBigElevatorMasterMotor(Robot.oi.elevatorStick.getRawAxis(1));
+    	Robot.elevator.setSmallElevatorMotor(Robot.oi.elevatorStick.getRawAxis(5));
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -44,9 +38,8 @@ public class ActiveIntake extends Command
     // Called once after isFinished returns true
     protected void end() 
     {
-    	Robot.intake.setConveyorSpeed(0);
-    	Robot.intake.setLeftWheelSpeed(0);
-    	Robot.intake.setRightWheelSpeed(0);
+    	Robot.elevator.setBigElevatorMasterMotor(0);
+    	Robot.elevator.setSmallElevatorMotor(0);
     }
 
     // Called when another command which requires one or more of the same

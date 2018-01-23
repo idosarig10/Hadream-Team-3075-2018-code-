@@ -16,9 +16,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.lang.Thread.State;
 
+import org.usfirst.frc.team3075.robot.commands.ActiveIntake;
 import org.usfirst.frc.team3075.robot.commands.ExampleCommand;
 import org.usfirst.frc.team3075.robot.subsystems.Chassis;
+import org.usfirst.frc.team3075.robot.subsystems.Elevator;
 import org.usfirst.frc.team3075.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team3075.robot.subsystems.Intake;
 
 import javax.swing.text.StyleContext.SmallAttributeSet;
 
@@ -35,7 +38,8 @@ public class Robot extends IterativeRobot
 	= new ExampleSubsystem();
 	public static OI oi;
 	public static Chassis driveSystem = new Chassis();
-	//	public static Elevator elevator = new Elevator();
+	public static Elevator elevator = new Elevator();
+	public static Intake intake = new Intake();
 
 
 	Command autonomousCommand;
@@ -141,8 +145,13 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("right XD velocity", driveSystem.getRightEncoder().getRate());
 		SmartDashboard.putNumber("left XD max v", leftMaxV);
 		SmartDashboard.putNumber("right XD max v", rightMaxV);
+	
 		if(Robot.driveSystem.getLeftMPController().getSetpoint() != null)
-			SmartDashboard.putNumber("velocity setpoint", Robot.driveSystem.getLeftMPController().getSetpoint().velocity);
-		//    	SmartDashboard.putNumber("position setpoint", setpoint.position);
+		{
+			SmartDashboard.putNumber("setpoint p", driveSystem.getLeftMPController().getSetpoint().position);
+			SmartDashboard.putNumber("setpoint v", driveSystem.getLeftMPController().getSetpoint().velocity);
+			SmartDashboard.putNumber("setpoint a", driveSystem.getLeftMPController().getSetpoint().acceleration);
+		}
+			//    	SmartDashboard.putNumber("position setpoint", setpoint.position);
 	}
 }

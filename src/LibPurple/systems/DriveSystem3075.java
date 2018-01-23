@@ -13,6 +13,7 @@ import LibPurple.control.Trajectory3075.Type;
 import LibPurple.control.TrajectoryFile;
 import LibPurple.control.TrajectorySMP;
 import LibPurple.control.TrajectoryTMP;
+import LibPurple.control.TrajectoryTSEMP;
 import LibPurple.sensors.ConsoleJoystick;
 import LibPurple.sensors.Encoder3075;
 import LibPurple.systems.DriveSystem3075.DrivingState;
@@ -260,7 +261,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	public Command driveStraight(double distance)
 	{
 		double maxA = Math.min(rightMaxA, leftMaxA);
-		return new DriveDistance(this, distance, distance, false, maxA);
+		return new DriveDistance(this, distance, distance, true, maxA);
 	}
 
 	@Deprecated
@@ -956,13 +957,6 @@ class DriveDistance extends Command
 		driveSystem.setMPValues(driveSystem.leftMPValue, driveSystem.rightMPValue);
 		driveSystem.setTolerance(driveSystem.positionTolerance);
 
-		rightMP.setTrajectory(new TrajectorySMP(rightDistance, rightMaxA));
-		leftMP.setTrajectory(new TrajectorySMP(leftDistance, leftMaxA));
-		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
-
-
-
-
 		if(this.MPType == Type.SinosoidalMotionProfile)
 		{
 			rightMP.setTrajectory(new TrajectorySMP(rightDistance, rightMaxA));
@@ -970,8 +964,8 @@ class DriveDistance extends Command
 		}
 		else if(this.MPType == Type.TrapizoidalMotionProfile)
 		{
-			rightMP.setTrajectory(new TrajectoryTMP(rightDistance, rightMaxA, rightMaxV));
-			leftMP.setTrajectory(new TrajectoryTMP(leftDistance, leftMaxA, leftMaxV));
+			rightMP.setTrajectory(new TrajectoryTSEMP(rightDistance, rightMaxA, rightMaxV, 0, 1));
+			leftMP.setTrajectory(new TrajectoryTSEMP(leftDistance, leftMaxA, leftMaxV, 0, 1));
 		}
 		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
 	}
@@ -989,7 +983,7 @@ class DriveDistance extends Command
 		{
 			return false;
 		}
-		return leftMP.isTimeUp() && rightMP.isTimeUp() && rightMP.onTarget() && leftMP.onTarget();
+		return leftMP.isTimeUp() && rightMP.isTimeUp();// && rightMP.onTarget() && leftMP.onTarget());
 	}
 
 	@Override
@@ -997,6 +991,7 @@ class DriveDistance extends Command
 	{
 		leftMP.disable();
 		rightMP.disable();
+		Utils.print("left end velocity: " + Robot.driveSystem.getLeftEncoder().getRate());
 		driveSystem.enterState(this.prevState);
 	}
 

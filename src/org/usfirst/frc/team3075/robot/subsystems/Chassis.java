@@ -60,9 +60,12 @@ public class Chassis extends DriveSystem3075
 
 		rearLeft.set(ControlMode.Follower, frontLeft.getDeviceID());
 		rearRight.set(ControlMode.Follower, frontRight.getDeviceID());
+		
+//		frontRight.setInverted(true);
+//		rearRight.setInverted(true);
 
-		rightEncoder.setDistancePerPulse(Constants.distancePerPulse);
-		leftEncoder.setDistancePerPulse(Constants.distancePerPulse);
+		rightEncoder.setDistancePerPulse(Constants.rightDistancePerPulse);
+		leftEncoder.setDistancePerPulse(Constants.leftDistancePerPulse);
 		super.distancePerAngle = Constants.distancePerAngle;
   
 		leftEncoder.setReverseDirection(true);

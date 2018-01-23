@@ -354,4 +354,9 @@ public class MPController implements Sendable
 	public Trajectory3075.Setpoint getSetpoint() {
 		return setpoint;
 	}
+	
+	public double getPassedTime()
+	{
+		return this.passedTime;
+	}
 }

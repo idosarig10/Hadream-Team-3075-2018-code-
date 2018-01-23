@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 
+import org.usfirst.frc.team3075.robot.commands.ActiveIntake;
 import org.usfirst.frc.team3075.robot.commands.ExampleCommand;
 
 /**
@@ -35,15 +36,18 @@ public class OI {
 	public ConsoleJoystick driverStick = new ConsoleJoystick(0);
 	public ConsoleJoystick elevatorStick = new ConsoleJoystick(1);
 	
-	Button lowShift = new JoystickButton(driverStick, 5);
-	Button highShift = new JoystickButton(driverStick, 6);
+	Button lowShiftButton = new JoystickButton(driverStick, 5);
+	Button highShiftButton = new JoystickButton(driverStick, 6);
 	Button driveforward = new JoystickButton(driverStick, 1);
+	Button activeIntakeButton = new JoystickButton(elevatorStick, 3);
 
 	public OI() 
 	{
-		lowShift.whenPressed(new SetShift(Chassis.Shift.Power));
-		highShift.whenPressed(new SetShift(Chassis.Shift.Speed));
+		lowShiftButton.whenPressed(new SetShift(Chassis.Shift.Power));
+		highShiftButton.whenPressed(new SetShift(Chassis.Shift.Speed));
 		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(1, false));
+		activeIntakeButton.whenPressed(new ActiveIntake(0.5, 0.5));
+		
 //		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(2, false));
 //		driveforward.whenPressed(Robot.driveSystem.driveArc(1, 90, false));
 	}
