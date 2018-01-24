@@ -109,6 +109,7 @@ public class Robot extends IterativeRobot
 			autonomousCommand.cancel();
 		}
 		driveSystem.reset();
+		driveSystem.gyro.reset();
 	}
 
 	double rightMaxV = 0;
@@ -145,7 +146,8 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("right XD velocity", driveSystem.getRightEncoder().getRate());
 		SmartDashboard.putNumber("left XD max v", leftMaxV);
 		SmartDashboard.putNumber("right XD max v", rightMaxV);
-	
+		SmartDashboard.putNumber("gyro angle", driveSystem.gyro.getAngle());
+		
 		if(Robot.driveSystem.getLeftMPController().getSetpoint() != null)
 		{
 			SmartDashboard.putNumber("setpoint p", driveSystem.getLeftMPController().getSetpoint().position);

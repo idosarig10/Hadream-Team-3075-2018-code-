@@ -24,6 +24,7 @@ public class TrajectoryTMP extends Trajectory3075
 	@Override
 	public Trajectory3075.Setpoint calculate(double time)
 	{
+		maxV = Math.min(maxV, T/2 * maxA);
 		double b = T - ((2 * maxV) / maxA); // the upper base of the trapezoid
 		double x = maxV / maxA; // the time it takes to accelerate to maxV
 		

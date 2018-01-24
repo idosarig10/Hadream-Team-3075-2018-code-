@@ -26,11 +26,10 @@ public class TrajectoryTSEMP extends Trajectory3075
 		this.endV = endV * direction;
 		this.startV = startV * direction;
 
-		this.endSeg = (this.maxV - this.endV) / 2;
+		this.endSeg = (this.maxV - this.endV) / this.maxA;
 		this.startSeg = (this.endV - this.startSeg) / this.maxA;
 		this.b = ((2 * this.distance) - (this.startV * this.startSeg) - (2 * this.endSeg * this.maxV) - (2 * this.endSeg * this.endV)) / (2 * this.maxV);
 		this.T = this.startSeg + 2 * this.endSeg + b;
-		Utils.print("" + T);
 	}
 
 	@Override

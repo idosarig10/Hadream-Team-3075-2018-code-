@@ -1,5 +1,11 @@
 package LibPurple.utils;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Command;
@@ -20,13 +26,13 @@ public class Utils
 
 	public static double accellimit(double currentValue, double lastValue, double accellimit)
 	{
-//		double acc = Math.signum(currentValue - lastValue) > 0 ? accellimit : deaccelimit;
+		//		double acc = Math.signum(currentValue - lastValue) > 0 ? accellimit : deaccelimit;
 		return  lastValue + (Math.signum(currentValue - lastValue) * Math.min(accellimit, Math.abs(currentValue - lastValue)));
 	}
 
 	public static double motorBound(double value, double motorBound)
-    {
-    	return Math.signum(value) * (Math.abs(value) - (motorBound * Math.abs(value)) + motorBound);
+	{
+		return Math.signum(value) * (Math.abs(value) - (motorBound * Math.abs(value)) + motorBound);
 	}
 
 	public static double[] arcadeDrive(double y, double x)
@@ -158,17 +164,68 @@ public class Utils
 		return 0;
 	}
 
-	// In the memory of our beloved Kellner
 
-//	public static double[] driveCurveByDistance(double radius, double distance, double robotWidth)
-//	{
-//		double[] arr = {(radius-robotWidth/2)*distance/radius, (radius+robotWidth/2)*distance/radius};
-//		return arr;
-//	}
+	public static FileWriter initialiseCSVFile(String name)
+	{
+		DateFormat dd = new SimpleDateFormat("hh:mm:ss");
+		Date time = new Date();
+		try 
+		{
+			return new FileWriter(name + "_" + dd.format(time) + ".csv");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-//	public static double[] driveCurveByAngle(double angle, double distance, double robotWidth)
-//	{
-//		double[] arr = {distance - (robotWidth/2)*angle, distance + (robotWidth/2)*angle};
-//		return arr;
-//	}
+	public static void addCSVLine(FileWriter writer, double[] params)
+	{
+
+		try
+		{
+			int len = params.length;
+			if (len > 2)
+			{
+				for(int i = 0; i < len -1; i++)
+				{
+					writer.write(Double.toString(params[i]));
+					writer.write("\t,");
+				}
+			}
+			writer.write(Double.toString(params[len -1]));
+			writer.write('\n');
+
+		}
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void closeCSVFile(FileWriter writer)
+	{
+		try {
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// In the memory of our beloved Kellner
+
+		//	public static double[] driveCurveByDistance(double radius, double distance, double robotWidth)
+		//	{
+		//		double[] arr = {(radius-robotWidth/2)*distance/radius, (radius+robotWidth/2)*distance/radius};
+		//		return arr;
+		//	}
+
+		//	public static double[] driveCurveByAngle(double angle, double distance, double robotWidth)
+		//	{
+		//		double[] arr = {distance - (robotWidth/2)*angle, distance + (robotWidth/2)*angle};
+		//		return arr;
+		//	}
+	}
 }

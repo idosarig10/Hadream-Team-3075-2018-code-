@@ -13,6 +13,7 @@ import LibPurple.actuator.Solenoid3075;
 import LibPurple.sensors.Encoder3075;
 import LibPurple.sensors.EncoderTalon3075;
 import LibPurple.systems.DriveSystem3075;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -34,6 +35,8 @@ public class Chassis extends DriveSystem3075
 
 	private EncoderTalon3075 leftEncoder;
 	private EncoderTalon3075 rightEncoder;
+	
+	public AnalogGyro gyro = new AnalogGyro(0);
 
 	public static enum Shift
 	{

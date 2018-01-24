@@ -1,7 +1,10 @@
 package LibPurple.systems;
 
 
+import java.io.FileWriter;
+
 import org.usfirst.frc.team3075.robot.Robot;
+
 
 import LibPurple.control.MPController;
 import LibPurple.control.MPController.MPValue;
@@ -102,6 +105,15 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 
 	}
 
+	public Encoder3075 getLeftEncoder()
+	{
+		return this.leftEncoder;
+	}
+	
+	public Encoder3075 getRightEncoder()
+	{
+		return this.rightEncoder;
+	}
 
 	@Override
 	protected void initDefaultCommand()
@@ -889,7 +901,9 @@ class DriveDistance extends Command
 	DrivingState prevState;
 
 	Trajectory3075.Type MPType;
-
+	
+	FileWriter leftHandle;
+	FileWriter rightHandle;
 
 	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double maxA)
 	{
@@ -964,16 +978,25 @@ class DriveDistance extends Command
 		}
 		else if(this.MPType == Type.TrapizoidalMotionProfile)
 		{
-			rightMP.setTrajectory(new TrajectoryTSEMP(rightDistance, rightMaxA, rightMaxV, 0, 1));
-			leftMP.setTrajectory(new TrajectoryTSEMP(leftDistance, leftMaxA, leftMaxV, 0, 1));
+			rightMP.setTrajectory(new TrajectoryTMP(rightDistance, rightMaxA, rightMaxV));
+			leftMP.setTrajectory(new TrajectoryTMP(leftDistance, leftMaxA, leftMaxV));
 		}
 		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
+		this.leftHandle = Utils.initialiseCSVFile("/Graphs/left");
+		this.rightHandle = Utils.initialiseCSVFile("/Graphs/right");
+		if(this.leftHandle == null)
+			Utils.print("Error opening file");
+		if(this.rightHandle == null)
+			Utils.print("Error opening file");
 	}
 
 	@Override
 	protected void execute() 
 	{
-		// TODO Auto-generated method stub
+		double[] lparams =  {leftMP.getPassedTime(), leftMP.getSetpoint().position, driveSystem.getLeftEncoder().getDistance(), leftMP.getSetpoint().velocity, driveSystem.getLeftEncoder().getRate()};
+		double[] rparams =  {rightMP.getPassedTime(), rightMP.getSetpoint().position, driveSystem.getRightEncoder().getDistance(), rightMP.getSetpoint().velocity, driveSystem.getRightEncoder().getRate()};
+		Utils.addCSVLine(this.leftHandle, lparams);
+		Utils.addCSVLine(this.rightHandle, rparams);
 	}
 
 	@Override
@@ -983,12 +1006,14 @@ class DriveDistance extends Command
 		{
 			return false;
 		}
-		return leftMP.isTimeUp() && rightMP.isTimeUp();// && rightMP.onTarget() && leftMP.onTarget());
+		return leftMP.isTimeUp() && rightMP.isTimeUp() && rightMP.onTarget() && leftMP.onTarget();
 	}
 
 	@Override
 	protected void end() 
 	{
+		Utils.closeCSVFile(this.leftHandle);
+		Utils.closeCSVFile(this.rightHandle);
 		leftMP.disable();
 		rightMP.disable();
 		Utils.print("left end velocity: " + Robot.driveSystem.getLeftEncoder().getRate());
