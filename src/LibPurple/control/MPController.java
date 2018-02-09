@@ -121,6 +121,7 @@ public class MPController implements Sendable
     
     public void setTrajectory(Trajectory3075 trajectory)
     {
+    	Utils.print("total time= " + trajectory.getTotalTime());
     	this.trajectory = trajectory;
     	this.setpoint = new Trajectory3075.Setpoint();
 		this.now = 0;

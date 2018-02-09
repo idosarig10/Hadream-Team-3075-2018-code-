@@ -109,7 +109,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return this.leftEncoder;
 	}
-	
+
 	public Encoder3075 getRightEncoder()
 	{
 		return this.rightEncoder;
@@ -364,6 +364,11 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	public Command turnAngle(double angle, double maxA)
 	{			
 		return new TurnAngle(this, angle,  false, maxA);
+	}
+	
+	public Command turnAngleTrapizodial(double angle)
+	{
+		return new TurnAngle(this, angle, false, Type.TrapizoidalMotionProfile);
 	}
 
 	/**
@@ -657,7 +662,7 @@ class XboxArcade extends Command
 		throttle = Utils.deadband(throttle, 0.01);
 		//		turn = Utils.deadband(turn, 0.3);
 
-		throttle = Utils.accellimit(throttle, last, 0.2);
+		//		throttle = Utils.accellimit(throttle, last, 0.2);
 		leftValue = (throttle + turn);
 		rightValue = (throttle - turn);
 
@@ -800,8 +805,10 @@ class TurnAngle extends Command
 	double rightDistance;
 	double angle;
 	double maxA;
+	double maxV;
 
 	DrivingState prevState;
+	private Type MPType;
 
 	public TurnAngle(DriveSystem3075 driveSystem, double angle, boolean endless)
 	{
@@ -835,12 +842,26 @@ class TurnAngle extends Command
 		leftMP = driveSystem.getLeftMPController();
 	}
 
+	public TurnAngle(DriveSystem3075 driveSystem, double angle, boolean endless, Type type)
+	{		
+		requires(driveSystem);
+
+		this.driveSystem = driveSystem;
+		this.leftDistance = driveSystem.distancePerAngle * angle;
+		this.rightDistance = -driveSystem.distancePerAngle * angle;
+		this.angle = angle;
+		this.endless = endless;
+		this.maxA = Math.min(driveSystem.getLeftTurnMaxA(), driveSystem.getRightTurnMaxA());
+		this.maxV = Math.min(driveSystem.getLeftTurnMaxA(), driveSystem.getRightTurnMaxV());
+		this.MPType = type;
+		rightMP = driveSystem.getRightMPController();
+		leftMP = driveSystem.getLeftMPController();
+	}
 
 	@Override
 	protected void initialize() 
 	{
 		Utils.print("started");
-
 
 		prevState = driveSystem.state;
 		driveSystem.reset();
@@ -848,8 +869,17 @@ class TurnAngle extends Command
 		driveSystem.setTurnMPValues(driveSystem.leftTurnMPValue, driveSystem.rightTurnMPValue);
 		driveSystem.setTolerance(driveSystem.angleTolerance * driveSystem.distancePerAngle);
 
-		rightMP.setTrajectory(new TrajectorySMP(rightDistance, maxA));
-		leftMP.setTrajectory(new TrajectorySMP(leftDistance, maxA));
+		if(this.MPType == Type.SinosoidalMotionProfile)
+		{
+			rightMP.setTrajectory(new TrajectorySMP(rightDistance, maxA));
+			leftMP.setTrajectory(new TrajectorySMP(leftDistance, maxA));
+		}
+		else if(this.MPType == Type.TrapizoidalMotionProfile)
+		{
+			Utils.print("in if");
+			rightMP.setTrajectory(new TrajectoryTMP(rightDistance, maxA, maxV));
+			leftMP.setTrajectory(new TrajectoryTMP(leftDistance, maxA, maxV));
+		}
 		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
 	}
 
@@ -866,7 +896,7 @@ class TurnAngle extends Command
 		{
 			return false;
 		}
-		return Utils.inRange(driveSystem.getAngle(), this.angle, driveSystem.angleTolerance);
+		return Utils.inRange(driveSystem.getAngle(), this.angle, driveSystem.angleTolerance) && this.rightMP.isTimeUp();
 	}
 
 	@Override
@@ -901,9 +931,8 @@ class DriveDistance extends Command
 	DrivingState prevState;
 
 	Trajectory3075.Type MPType;
-	
-	FileWriter leftHandle;
-	FileWriter rightHandle;
+
+	FileWriter handle;
 
 	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double maxA)
 	{
@@ -959,6 +988,7 @@ class DriveDistance extends Command
 
 		rightMP = driveSystem.getRightMPController();
 		leftMP = driveSystem.getLeftMPController();
+
 	}
 
 
@@ -982,21 +1012,17 @@ class DriveDistance extends Command
 			leftMP.setTrajectory(new TrajectoryTMP(leftDistance, leftMaxA, leftMaxV));
 		}
 		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
-		this.leftHandle = Utils.initialiseCSVFile("/Graphs/left");
-		this.rightHandle = Utils.initialiseCSVFile("/Graphs/right");
-		if(this.leftHandle == null)
-			Utils.print("Error opening file");
-		if(this.rightHandle == null)
+		this.handle = Utils.initialiseCSVFile("/graphs/drive1");
+		if(this.handle == null)
 			Utils.print("Error opening file");
 	}
 
 	@Override
 	protected void execute() 
 	{
-		double[] lparams =  {leftMP.getPassedTime(), leftMP.getSetpoint().position, driveSystem.getLeftEncoder().getDistance(), leftMP.getSetpoint().velocity, driveSystem.getLeftEncoder().getRate()};
-		double[] rparams =  {rightMP.getPassedTime(), rightMP.getSetpoint().position, driveSystem.getRightEncoder().getDistance(), rightMP.getSetpoint().velocity, driveSystem.getRightEncoder().getRate()};
-		Utils.addCSVLine(this.leftHandle, lparams);
-		Utils.addCSVLine(this.rightHandle, rparams);
+		double[] params =  {leftMP.getPassedTime(), leftMP.getSetpoint().position, leftMP.getSetpoint().velocity,leftMP.getSetpoint().acceleration};
+		Utils.addCSVLine(this.handle, params);
+
 	}
 
 	@Override
@@ -1012,11 +1038,11 @@ class DriveDistance extends Command
 	@Override
 	protected void end() 
 	{
-		Utils.closeCSVFile(this.leftHandle);
-		Utils.closeCSVFile(this.rightHandle);
+		Utils.closeCSVFile(this.handle);
+		//		Utils.closeCSVFile(this.rightHandle);
 		leftMP.disable();
 		rightMP.disable();
-		Utils.print("left end velocity: " + Robot.driveSystem.getLeftEncoder().getRate());
+		//		Utils.print("left end velocity: " + Robot.driveSystem.getLeftEncoder().getRate());
 		driveSystem.enterState(this.prevState);
 	}
 
@@ -1100,7 +1126,7 @@ class StateToggle extends InstantCommand
 
 	public StateToggle(DriveSystem3075 driveSystem, DrivingState state1, DrivingState state2) 
 	{
-//		requires(driveSystem);
+		//		requires(driveSystem);
 		this.driveSystem = driveSystem;
 		this.state1 = state1;
 		this.state2 = state2;

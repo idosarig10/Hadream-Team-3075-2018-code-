@@ -6,6 +6,7 @@ import org.usfirst.frc.team3075.robot.RobotMap;
 import org.usfirst.frc.team3075.robot.subsystems.Chassis.Shift;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -32,6 +33,7 @@ public class Chassis extends DriveSystem3075
 	private WPI_TalonSRX rearRight;
 
 	private Solenoid3075 shifter;
+	private Shift shift;
 
 	private EncoderTalon3075 leftEncoder;
 	private EncoderTalon3075 rightEncoder;
@@ -50,6 +52,9 @@ public class Chassis extends DriveSystem3075
 		rearLeft = new WPI_TalonSRX(RobotMap.rearLeft);
 		rearRight = new WPI_TalonSRX(RobotMap.rearRight);
 
+		frontLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		frontRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		
 		frontRight.setInverted(true);
 		rearRight.setInverted(true);
 
@@ -64,15 +69,12 @@ public class Chassis extends DriveSystem3075
 		rearLeft.set(ControlMode.Follower, frontLeft.getDeviceID());
 		rearRight.set(ControlMode.Follower, frontRight.getDeviceID());
 		
-//		frontRight.setInverted(true);
-//		rearRight.setInverted(true);
-
 		rightEncoder.setDistancePerPulse(Constants.rightDistancePerPulse);
 		leftEncoder.setDistancePerPulse(Constants.leftDistancePerPulse);
 		super.distancePerAngle = Constants.distancePerAngle;
   
 		leftEncoder.setReverseDirection(true);
-		rightEncoder.setReverseDirection(true);
+		rightEncoder.setReverseDirection(false);
 
 		super.rightMaxV = Constants.powerRightMaxV;
 		super.leftMaxV = Constants.powerLeftMaxV;

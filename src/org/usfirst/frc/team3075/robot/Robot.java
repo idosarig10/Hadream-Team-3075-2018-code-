@@ -40,6 +40,7 @@ public class Robot extends IterativeRobot
 	public static Chassis driveSystem = new Chassis();
 	public static Elevator elevator = new Elevator();
 	public static Intake intake = new Intake();
+	
 
 
 	Command autonomousCommand;
@@ -109,7 +110,10 @@ public class Robot extends IterativeRobot
 			autonomousCommand.cancel();
 		}
 		driveSystem.reset();
+		elevator.resetEncoders();
 		driveSystem.gyro.reset();
+		rightMaxV = 0;
+		leftMaxV = 0;
 	}
 
 	double rightMaxV = 0;
@@ -147,6 +151,11 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("left XD max v", leftMaxV);
 		SmartDashboard.putNumber("right XD max v", rightMaxV);
 		SmartDashboard.putNumber("gyro angle", driveSystem.gyro.getAngle());
+		SmartDashboard.putNumber("angle", driveSystem.getAngle());
+		SmartDashboard.putNumber("elevator position" , elevator.getPositionSmallEncoder());
+		SmartDashboard.putNumber("elevator error", elevator.smallElevatorPID.getError());
+		SmartDashboard.putNumber("elevator pid output", elevator.smallElevatorPID.get());
+		SmartDashboard.putNumber("small elevator power", elevator.smallElevatorMotor.get());
 		
 		if(Robot.driveSystem.getLeftMPController().getSetpoint() != null)
 		{

@@ -36,7 +36,7 @@ public class GyroMPController implements Sendable
 		 * @param ka	Acceleration feed-forward term
 		 * @param maxV	Max velocity of the system
 		 * @param maxA	Max acceleration of the system
-		 * @param kGyro porpotional constant for gyro feed-back control
+		 * @param kGyro porpotional constant for gyro feed-back control, one side should get a positive value and the other one a negative value
 		 */
 		public MPValue(PIDvalue pid, double kv, double ka, double kGyro)
 		{

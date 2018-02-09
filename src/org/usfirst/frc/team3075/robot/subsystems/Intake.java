@@ -6,6 +6,8 @@ import org.usfirst.frc.team3075.robot.commands.ActiveIntake;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import LibPurple.actuator.Solenoid3075;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -14,15 +16,19 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Intake extends Subsystem 
 {
 	
-	public WPI_TalonSRX rightWheel;
-	public WPI_TalonSRX leftWheel;
-	public WPI_TalonSRX Conveyor;
+	private WPI_TalonSRX rightWheel;
+	private WPI_TalonSRX leftWheel;
+	private WPI_TalonSRX conveyor;
+	
+	public Solenoid3075 wheelsCylinder;
+	public boolean isFolded = true;
 	
 	public Intake()
 	{
 		rightWheel = new WPI_TalonSRX(RobotMap.leftWheel);
 		leftWheel = new WPI_TalonSRX(RobotMap.rightWheel);
-		Conveyor = new WPI_TalonSRX(RobotMap.conveyor);
+		conveyor = new WPI_TalonSRX(RobotMap.conveyor);
+		wheelsCylinder = new Solenoid3075(RobotMap.solenoidForward, RobotMap.solenoidBackward);
 	}
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -32,10 +38,10 @@ public class Intake extends Subsystem
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
-    
+
     public void setConveyorSpeed(double speed)
     {
-		rightWheel.set(speed);
+		conveyor.set(speed);
 	}
 	
 	public void setRightWheelSpeed(double speed)
@@ -46,5 +52,10 @@ public class Intake extends Subsystem
 	public void setLeftWheelSpeed(double speed)
 	{
 		leftWheel.set(speed);
+	}
+	
+	public void setSolenoid(Value value)
+	{
+		this.wheelsCylinder.set(value);
 	}
 }

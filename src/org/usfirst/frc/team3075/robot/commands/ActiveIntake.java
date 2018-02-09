@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ActiveIntake extends Command 
+public class ActiveIntake extends Command
 {
 
 	private double conveyorSpeed;
@@ -31,8 +31,11 @@ public class ActiveIntake extends Command
     protected void execute() 
     {
     	Robot.intake.setConveyorSpeed(conveyorSpeed);
-    	Robot.intake.setLeftWheelSpeed(wheelsSpeed);
-    	Robot.intake.setRightWheelSpeed(wheelsSpeed);
+    	if(!Robot.intake.isFolded)
+    	{
+	    	Robot.intake.setLeftWheelSpeed(wheelsSpeed);
+	    	Robot.intake.setRightWheelSpeed(-wheelsSpeed);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

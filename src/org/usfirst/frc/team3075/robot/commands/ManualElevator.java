@@ -20,13 +20,15 @@ public class ManualElevator extends Command
     // Called just before this Command runs the first time
     protected void initialize() 
     {
+    	Robot.elevator.disableBigElevatorPID();
+    	Robot.elevator.disableSmallElevatorPID();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() 
     {
-    	Robot.elevator.setBigElevatorMasterMotor(Robot.oi.elevatorStick.getRawAxis(1));
-    	Robot.elevator.setSmallElevatorMotor(Robot.oi.elevatorStick.getRawAxis(5));
+    	Robot.elevator.setBigElevatorMasterMotor(Robot.oi.elevatorStick.getRawAxis(1) / 2);
+    	Robot.elevator.setSmallElevatorMotor(-Robot.oi.elevatorStick.getRawAxis(5));
     }
 
     // Make this return true when this Command no longer needs to run execute()

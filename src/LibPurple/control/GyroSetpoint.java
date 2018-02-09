@@ -2,16 +2,11 @@ package LibPurple.control;
 
 public class GyroSetpoint extends Trajectory3075.Setpoint
 {
-	public double velocity;
-	public double position;
-	public double acceleration;
 	public double heading;
 	
 	public GyroSetpoint(double position, double velocity, double acceleration, double heading)
 	{
-		this.velocity = velocity;
-		this.position = position;
-		this.acceleration = acceleration;
+		super(position, velocity, acceleration);
 		this.heading = heading;
 	}
 	
