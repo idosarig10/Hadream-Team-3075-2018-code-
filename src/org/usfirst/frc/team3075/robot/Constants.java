@@ -7,8 +7,8 @@ public class Constants
 {
 	////chassis/////
 	
-	public static final double rightDistancePerPulse = 7300;
-	public static final double leftDistancePerPulse = 7300;
+	public static final double rightDistancePerPulse = 7500;
+	public static final double leftDistancePerPulse = 7500;
 	public static final double distancePerAngle = 0.0065;
 	
 	public static final double powerRightMaxV = 2.18;//tene's dick fell off after the history test! <3 <3 co co bo bo (: :p DO NOT DELETE! RASTA WAS HERE 9\11\01                                                                                                        9/2/18

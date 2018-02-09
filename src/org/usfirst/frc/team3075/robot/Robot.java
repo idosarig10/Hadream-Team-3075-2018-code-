@@ -58,6 +58,8 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putData("Auto mode", chooser);
 		rightMaxV = 0;
 		leftMaxV = 0;
+		driveSystem.setTolerance(0.05);
+		driveSystem.setAngleTolerance(5);
 		
 	}
 
@@ -144,8 +146,8 @@ public class Robot extends IterativeRobot
 
 	public void logToDashBoard()
 	{
-		SmartDashboard.putNumber("left raw distance", driveSystem.getLeftEncoder().getDistance());
-		SmartDashboard.putNumber("right raw distance",driveSystem.getRightEncoder().getDistance());
+		SmartDashboard.putNumber("left raw distance", driveSystem.getLeftEncoder().getRawPosition());
+		SmartDashboard.putNumber("right raw distance",driveSystem.getRightEncoder().getRawPosition());
 		SmartDashboard.putNumber("left  XD velicity", driveSystem.getLeftEncoder().getRate());
 		SmartDashboard.putNumber("right XD velocity", driveSystem.getRightEncoder().getRate());
 		SmartDashboard.putNumber("left XD max v", leftMaxV);

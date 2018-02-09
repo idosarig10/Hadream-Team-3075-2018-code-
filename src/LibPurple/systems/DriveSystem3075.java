@@ -2,6 +2,7 @@ package LibPurple.systems;
 
 
 import java.io.FileWriter;
+import java.util.logging.FileHandler;
 
 import org.usfirst.frc.team3075.robot.Robot;
 
@@ -589,6 +590,11 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return (rightPID.getError() + leftPID.getError()) / 2;
 	}
+	
+	public void setAngleTolerance(double tolerance)
+	{
+		this.angleTolerance = tolerance;
+	}
 
 	public double getAngleTolerance()
 	{
@@ -809,6 +815,8 @@ class TurnAngle extends Command
 
 	DrivingState prevState;
 	private Type MPType;
+	
+	FileWriter handle;
 
 	public TurnAngle(DriveSystem3075 driveSystem, double angle, boolean endless)
 	{
@@ -861,8 +869,6 @@ class TurnAngle extends Command
 	@Override
 	protected void initialize() 
 	{
-		Utils.print("started");
-
 		prevState = driveSystem.state;
 		driveSystem.reset();
 
@@ -876,17 +882,24 @@ class TurnAngle extends Command
 		}
 		else if(this.MPType == Type.TrapizoidalMotionProfile)
 		{
-			Utils.print("in if");
+			Utils.print("L - Distance - " + leftDistance);
+			Utils.print("R - Distance - " + rightDistance);
 			rightMP.setTrajectory(new TrajectoryTMP(rightDistance, maxA, maxV));
 			leftMP.setTrajectory(new TrajectoryTMP(leftDistance, maxA, maxV));
 		}
 		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
+		
 	}
 
 	@Override
 	protected void execute() 
 	{
-		// TODO Auto-generated method stub
+//		this.handle = Utils.initialiseCSVFile("/graphs/turn");
+//		if(this.handle == null)
+//			Utils.print("Error opening file");
+//		double[] params = {leftMP.getPassedTime(), leftMP.getSetpoint().position, Robot.driveSystem.getLeftEncoder().getDistance(), leftMP.getSetpoint().velocity, Robot.driveSystem.getLeftEncoder().getRate(), rightMP.getSetpoint().position, Robot.driveSystem.getRightEncoder().getDistance(), rightMP.getSetpoint().velocity, Robot.driveSystem.getRightEncoder().getRate()};
+//		Utils.addCSVLine(this.handle, params);
+//		Utils.closeCSVFile(this.handle);
 	}
 
 	@Override
