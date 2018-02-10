@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.hal.PDPJNI;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -58,8 +59,6 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putData("Auto mode", chooser);
 		rightMaxV = 0;
 		leftMaxV = 0;
-		driveSystem.setPositionTolerance(0.05);
-		driveSystem.setAngleTolerance(2);
 		
 	}
 
@@ -158,6 +157,7 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("elevator error", elevator.smallElevatorPID.getError());
 		SmartDashboard.putNumber("elevator pid output", elevator.smallElevatorPID.get());
 		SmartDashboard.putNumber("small elevator power", elevator.smallElevatorMotor.get());
+//		SmartDashboard.putNumber("pdp current", PDPJNI.getPDPTotalCurrent(1));
 		
 		if(Robot.driveSystem.getLeftMPController().getSetpoint() != null)
 		{

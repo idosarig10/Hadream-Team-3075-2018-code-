@@ -90,8 +90,8 @@ public class Chassis extends DriveSystem3075
 		super.setMPValues(Constants.leftMPValue, Constants.rightMPValue);
 		super.setTurnMPValues(Constants.leftTurnMP, Constants.rightTurnMP);
 		super.setVelocityTolerance(0);
-		super.positionTolerance = Constants.positionTolerance;
-		super.angleTolerance = Constants.turnAngleTolerance;
+		super.setPositionTolerance(Constants.positionTolerance);
+		super.setAngleTolerance(Constants.turnAngleTolerance);
 
 		super.robotWidth = Constants.robotWidth;
 	}

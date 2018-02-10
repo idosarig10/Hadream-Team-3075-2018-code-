@@ -302,6 +302,11 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return new DriveDistance(this, distance, distance, endless, getMaxA(), getMaxA(), Type.TrapizoidalMotionProfile, getMaxV(), getMaxV());
 	}
+	
+	public Command driveStraightTrapizodial(double distance, double maxSpeed, double maxA)
+	{
+		return new DriveDistance(this, distance, distance, false, maxA, maxA, Type.TrapizoidalMotionProfile, maxSpeed, maxSpeed);
+	}
 
 	/**
 	 * drives in a circular motion
@@ -893,18 +898,17 @@ class TurnAngle extends Command
 			leftMP.setTrajectory(new TrajectoryTMP(leftDistance, maxA, maxV));
 		}
 		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
-		
+		this.handle = Utils.initialiseCSVFile("/graphs/turn");
+		if(this.handle == null)
+			Utils.print("Error opening file");	
 	}
 
 	@Override
 	protected void execute() 
 	{
-//		this.handle = Utils.initialiseCSVFile("/graphs/turn");
-//		if(this.handle == null)
-//			Utils.print("Error opening file");
-//		double[] params = {leftMP.getPassedTime(), leftMP.getSetpoint().position, Robot.driveSystem.getLeftEncoder().getDistance(), leftMP.getSetpoint().velocity, Robot.driveSystem.getLeftEncoder().getRate(), rightMP.getSetpoint().position, Robot.driveSystem.getRightEncoder().getDistance(), rightMP.getSetpoint().velocity, Robot.driveSystem.getRightEncoder().getRate()};
-//		Utils.addCSVLine(this.handle, params);
-//		Utils.closeCSVFile(this.handle);
+		double[] params = {leftMP.getPassedTime(), leftMP.getSetpoint().position, Robot.driveSystem.getLeftEncoder().getDistance(), leftMP.getSetpoint().velocity, Robot.driveSystem.getLeftEncoder().getRate(), rightMP.getSetpoint().position, Robot.driveSystem.getRightEncoder().getDistance(), rightMP.getSetpoint().velocity, Robot.driveSystem.getRightEncoder().getRate()};
+		Utils.addCSVLine(this.handle, params);
+		
 	}
 
 	@Override
@@ -920,6 +924,7 @@ class TurnAngle extends Command
 	@Override
 	protected void end() 
 	{
+		Utils.closeCSVFile(this.handle);
 		leftMP.disable();
 		rightMP.disable();
 		driveSystem.enterState(this.prevState);
