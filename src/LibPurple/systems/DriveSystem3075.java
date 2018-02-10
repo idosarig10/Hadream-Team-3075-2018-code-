@@ -436,6 +436,11 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		rightMP.setTolerance(tolerance);
 		leftMP.setTolerance(tolerance);
 	}
+	
+	public void setPositionTolerance(double tolerance)
+	{
+		this.positionTolerance = tolerance;
+	}
 
 	public double getAngle()
 	{
