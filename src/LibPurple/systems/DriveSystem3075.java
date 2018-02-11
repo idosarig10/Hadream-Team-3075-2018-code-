@@ -6,7 +6,7 @@ import java.util.logging.FileHandler;
 
 import org.usfirst.frc.team3075.robot.Robot;
 
-
+import LibPurple.control.GyroMPController;
 import LibPurple.control.MPController;
 import LibPurple.control.MPController.MPValue;
 import LibPurple.control.PIDvalue;
@@ -69,10 +69,10 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	private PIDController leftPID;
 	private PIDvalue leftPIDValue;
 
-	protected MPController rightMP;
+	protected GyroMPController rightMP;
 	protected MPValue rightMPValue;
 	protected MPValue rightTurnMPValue;
-	protected MPController leftMP;
+	protected GyroMPController leftMP;
 	protected MPValue leftMPValue;
 	protected MPValue leftTurnMPValue;
 
@@ -101,8 +101,8 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		this.rightEncoder.setPIDSourceType(PIDSourceType.kRate);
 		this.leftEncoder.setPIDSourceType(PIDSourceType.kRate);
 
-		leftMP = new MPController(leftMPValue, leftMotor, leftEncoder);
-		rightMP = new MPController(rightMPValue, rightMotor, rightEncoder);
+		leftMP = new GyroMPController(leftMPValue, leftMotor, leftEncoder);
+		rightMP = new GyroMPController(rightMPValue, rightMotor, rightEncoder);
 
 	}
 
@@ -1046,14 +1046,10 @@ class DriveDistance extends Command
 			driveSystem.setMPValues(this.arcValues, this.arcValues);
 		}
 		
-		Utils.print("tolerance - " + this.tolerance );
 		if(this.tolerance == 0)	
 			driveSystem.setTolerance(driveSystem.positionTolerance);
 		else
-		{
-			Utils.print("calc tolerance - " + (this.tolerance * ((this.leftDistance + this.rightDistance) / 2)));
 			driveSystem.setTolerance(this.tolerance * ((this.leftDistance + this.rightDistance) / 2));
-		}
 
 		if(this.MPType == Type.SinosoidalMotionProfile)
 		{
