@@ -7,9 +7,9 @@ import org.usfirst.frc.team3075.robot.commands.ReleaseCube;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class AutonomousLeftScale extends CommandGroup
+public class AutonomousRightScale extends CommandGroup
 {
-	public AutonomousLeftScale()
+	public AutonomousRightScale()
 	{
 		addSequential(Robot.driveSystem.driveStraightRelativeTolerance(7, 0.01));
 		addSequential(Robot.driveSystem.turnAngleTrapizodial(90));

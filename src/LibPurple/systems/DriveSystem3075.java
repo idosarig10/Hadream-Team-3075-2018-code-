@@ -303,6 +303,12 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		return new DriveDistance(this, distance, distance, endless, getMaxA(), getMaxA(), Type.TrapizoidalMotionProfile, getMaxV(), getMaxV());
 	}
 	
+	public Command driveStraightRelativeTolerance(double distance, double tolerancePercentage)
+	{
+		return new DriveDistance(this, distance, distance, false, getMaxA(), getMaxA(), Type.TrapizoidalMotionProfile, getMaxV(), getMaxV(), tolerancePercentage);
+	}
+
+	
 	public Command driveStraightTrapizodial(double distance, double maxSpeed, double maxA)
 	{
 		return new DriveDistance(this, distance, distance, false, maxA, maxA, Type.TrapizoidalMotionProfile, maxSpeed, maxSpeed);
@@ -956,7 +962,8 @@ class DriveDistance extends Command
 	Trajectory3075.Type MPType;
 
 	FileWriter handle;
-
+	
+	double tolerance;
 	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double maxA)
 	{
 		requires(driveSystem);
@@ -994,24 +1001,16 @@ class DriveDistance extends Command
 
 	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA, Type MPType, double leftMaxV, double rightMaxV)
 	{
-		requires(driveSystem);
-
+		this(driveSystem, leftDistance, rightDistance, endless, leftmaxA, rightMaxA);
 		this.MPType = MPType;
-		this.driveSystem = driveSystem;
-		this.leftDistance = leftDistance;
-		this.rightDistance = rightDistance;
-
-		this.leftMaxA = leftmaxA;
-		this.rightMaxA = rightMaxA;
-
 		this.leftMaxV = leftMaxV;
 		this.rightMaxV = rightMaxV;
-
-		this.endless = endless;
-
-		rightMP = driveSystem.getRightMPController();
-		leftMP = driveSystem.getLeftMPController();
-
+	}
+	
+	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA, Type MPType, double leftMaxV, double rightMaxV, double tolerancePrecentage)
+	{
+		this(driveSystem, leftDistance, rightDistance, endless, leftmaxA, rightMaxA, MPType, leftMaxV, rightMaxV);
+		this.tolerance = tolerancePrecentage;
 	}
 
 
@@ -1022,7 +1021,14 @@ class DriveDistance extends Command
 		driveSystem.reset();
 
 		driveSystem.setMPValues(driveSystem.leftMPValue, driveSystem.rightMPValue);
-		driveSystem.setTolerance(driveSystem.positionTolerance);
+		Utils.print("tolerance - " + this.tolerance );
+		if(this.tolerance == 0)	
+			driveSystem.setTolerance(driveSystem.positionTolerance);
+		else
+		{
+			Utils.print("calc tolerance - " + (this.tolerance * ((this.leftDistance + this.rightDistance) / 2)));
+			driveSystem.setTolerance(this.tolerance * ((this.leftDistance + this.rightDistance) / 2));
+		}
 
 		if(this.MPType == Type.SinosoidalMotionProfile)
 		{
@@ -1043,7 +1049,7 @@ class DriveDistance extends Command
 	@Override
 	protected void execute() 
 	{
-		double[] params =  {leftMP.getPassedTime(), leftMP.getSetpoint().position, leftMP.getSetpoint().velocity,leftMP.getSetpoint().acceleration};
+		double[] params =  {leftMP.getPassedTime(), leftMP.getSetpoint().position, Robot.driveSystem.getLeftEncoder().getDistance(), leftMP.getSetpoint().velocity, Robot.driveSystem.getLeftEncoder().getRate(),leftMP.getSetpoint().acceleration, rightMP.getSetpoint().position, Robot.driveSystem.getRightEncoder().getDistance(), rightMP.getSetpoint().velocity, Robot.driveSystem.getRightEncoder().getRate(),rightMP.getSetpoint().acceleration};
 		Utils.addCSVLine(this.handle, params);
 
 	}

@@ -59,9 +59,9 @@ public class OI {
 	{
 		lowShiftButton.whenPressed(new SetShift(Chassis.Shift.Power));
 		highShiftButton.whenPressed(new SetShift(Chassis.Shift.Speed));
-		driveforward.whenPressed(new AutonomousLeftSwitch());
-//		driveforward.whenPressed(Robot.driveSystem.turnAngleTrapizodial(5));
-//		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(3, false));
+		driveforward.whenPressed(new AutonomousLeftScale());
+//		driveforward.whenPressed(Robot.driveSystem.turnAngleTrapizodial(90));
+//		driveforward.whenPressed(Robot.driveSystem.driveStraightRelativeTolerance(1, 0.5));
 		activeIntakeButton.toggleWhenPressed(new ActiveIntake(0.7, 0.7));
 		lockWheelsButton.toggleWhenPressed(Robot.driveSystem.driveStraightTrapizodial(0, true));
 		releaseCubeButton.whileHeld(new ReleaseCube());
