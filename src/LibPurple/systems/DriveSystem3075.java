@@ -341,7 +341,31 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		Utils.print("left max v:" + (leftMaxV/2));
 		Utils.print("right max v: " + (rightMaxV/2));
 
-		return new DriveDistance(this, leftDistance, rightDistance, false, leftMaxA/2, rightMaxA/2, Type.TrapizoidalMotionProfile, leftMaxV/2, rightMaxV/2);
+		return new DriveDistance(this, leftDistance, rightDistance, false, leftMaxA, rightMaxA, Type.TrapizoidalMotionProfile, leftMaxV, rightMaxV);
+	}
+	
+	public Command driveArcMpValues(double radius, double angle, boolean clockwise, MPValue values)
+	{
+		double leftRadius = clockwise ? radius +  (robotWidth / 2) : radius - (robotWidth / 2); // robot's left side circle radius
+		double rightRadius = clockwise ? radius -  (robotWidth / 2) : radius + (robotWidth / 2); //robot's right side circle radius
+
+		double leftDistance = Math.toRadians(angle) * leftRadius; //robot's left side distance 
+		double rightDistance = Math.toRadians(angle) * rightRadius;//robot's right side distance
+
+		//robot's left side max acceleration
+		double leftMaxA = !clockwise ? getMaxA() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) : getMaxA();
+		//robot's right side max acceleration
+		double rightMaxA = clockwise ? getMaxA() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) : getMaxA();
+
+		//robot's left side max velocity
+		double leftMaxV = !clockwise ? getMaxV() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) : getMaxV();
+		//robot's right side max velocity
+		double rightMaxV = clockwise ? getMaxV() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) : getMaxV();
+
+		Utils.print("left max v:" + (leftMaxV/2));
+		Utils.print("right max v: " + (rightMaxV/2));
+
+		return new DriveDistance(this, leftDistance, rightDistance, false, leftMaxA, rightMaxA, Type.TrapizoidalMotionProfile, leftMaxV/2, rightMaxV/2, values);
 	}
 
 	/**
@@ -964,24 +988,8 @@ class DriveDistance extends Command
 	FileWriter handle;
 	
 	double tolerance;
-	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double maxA)
-	{
-		requires(driveSystem);
-
-		this.MPType = Type.SinosoidalMotionProfile;
-		this.driveSystem = driveSystem;
-		this.leftDistance = leftDistance;
-		this.rightDistance = rightDistance;
-		this.leftMaxA = maxA;
-		this.rightMaxA = maxA;
-
-		this.endless = endless;
-
-		rightMP = driveSystem.getRightMPController();
-		leftMP = driveSystem.getLeftMPController();
-
-	}
-
+	MPValue arcValues;
+	
 	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA)
 	{
 		requires(driveSystem);
@@ -997,7 +1005,11 @@ class DriveDistance extends Command
 		rightMP = driveSystem.getRightMPController();
 		leftMP = driveSystem.getLeftMPController();
 	}
-
+	
+	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double maxA)
+	{
+		this(driveSystem, leftDistance, rightDistance, endless, maxA, maxA);
+	}
 
 	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA, Type MPType, double leftMaxV, double rightMaxV)
 	{
@@ -1005,6 +1017,13 @@ class DriveDistance extends Command
 		this.MPType = MPType;
 		this.leftMaxV = leftMaxV;
 		this.rightMaxV = rightMaxV;
+	}
+	
+	
+	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA, Type MPType, double leftMaxV, double rightMaxV, MPValue arcValues)
+	{
+		this(driveSystem, leftDistance, rightDistance, endless, leftmaxA, rightMaxA, MPType, leftMaxV, rightMaxV);
+		this.arcValues = arcValues;
 	}
 	
 	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA, Type MPType, double leftMaxV, double rightMaxV, double tolerancePrecentage)
@@ -1019,8 +1038,14 @@ class DriveDistance extends Command
 	{
 		prevState = driveSystem.state;
 		driveSystem.reset();
-
-		driveSystem.setMPValues(driveSystem.leftMPValue, driveSystem.rightMPValue);
+		
+		if(this.arcValues == null)
+			driveSystem.setMPValues(driveSystem.leftMPValue, driveSystem.rightMPValue);
+		else
+		{
+			driveSystem.setMPValues(this.arcValues, this.arcValues);
+		}
+		
 		Utils.print("tolerance - " + this.tolerance );
 		if(this.tolerance == 0)	
 			driveSystem.setTolerance(driveSystem.positionTolerance);

@@ -12,6 +12,7 @@ import org.usfirst.frc.team3075.robot.subsystems.Chassis;
 
 import Atunomous.AutonomousLeftScale;
 import Atunomous.AutonomousLeftSwitch;
+import Atunomous.AutonomousMiddle;
 import Atunomous.AutonomousMiddlePickUp;
 import LibPurple.sensors.ConsoleJoystick;
 import edu.wpi.first.wpilibj.Joystick;
@@ -59,8 +60,10 @@ public class OI {
 	{
 		lowShiftButton.whenPressed(new SetShift(Chassis.Shift.Power));
 		highShiftButton.whenPressed(new SetShift(Chassis.Shift.Speed));
-		driveforward.whenPressed(new AutonomousLeftScale());
-//		driveforward.whenPressed(Robot.driveSystem.turnAngleTrapizodial(90));
+//		driveforward.whenPressed(new AutonomousMiddle());
+		
+		
+		driveforward.whenPressed(Robot.driveSystem.driveArc(1, 180, true));
 //		driveforward.whenPressed(Robot.driveSystem.driveStraightRelativeTolerance(1, 0.5));
 		activeIntakeButton.toggleWhenPressed(new ActiveIntake(0.7, 0.7));
 		lockWheelsButton.toggleWhenPressed(Robot.driveSystem.driveStraightTrapizodial(0, true));

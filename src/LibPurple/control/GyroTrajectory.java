@@ -24,7 +24,19 @@ public class GyroTrajectory extends Trajectory3075
 	@Override
 	public GyroSetpoint calculate(double time) 
 	{
-		maxV = Math.min(maxV, T/2 * maxA);
+		if(this.direction > 0)
+		{
+			if(maxV > (T/2) * maxA)
+				T = Math.sqrt((4 * this.distance) / this.maxA);
+			maxV = Math.min(maxV, (this.T / 2) * this.maxA);
+		}
+		else
+		{
+			if(maxV < (T/2) * maxA)
+				T = Math.sqrt((4 * this.distance) / this.maxA);
+			maxV = Math.max(maxV, (this.T / 2) * this.maxA);
+		}
+		
 		double b = T - ((2 * maxV) / maxA); // the upper base of the trapezoid
 		double x = maxV / maxA; // the time it takes to accelerate to maxV
 		

@@ -19,14 +19,14 @@ public class GyroMPController implements Sendable
 	/**
 	 * A <b>structure</b> for storing Motion Profiling values
 	 */
-	public static class MPValue
+	public static class GyroMPValue
 	{
 		public PIDvalue positionPid;
 		public double kv;
 		public double ka;
 		public double kGyro;
 		
-		public MPValue() {}
+		public GyroMPValue() {}
 		
 		/**
 		 * Allocate an MPValue on the Motion Profiler
@@ -38,7 +38,7 @@ public class GyroMPController implements Sendable
 		 * @param maxA	Max acceleration of the system
 		 * @param kGyro porpotional constant for gyro feed-back control, one side should get a positive value and the other one a negative value
 		 */
-		public MPValue(PIDvalue pid, double kv, double ka, double kGyro)
+		public GyroMPValue(PIDvalue pid, double kv, double ka, double kGyro)
 		{
 			this.positionPid = pid;
 			this.kv = kv;
@@ -72,7 +72,7 @@ public class GyroMPController implements Sendable
         
     }
 
-    private MPValue values;
+    private GyroMPValue values;
 	private SpeedController motor;
 	private PIDSource source;
 	private AnalogGyro gyro;
@@ -104,7 +104,7 @@ public class GyroMPController implements Sendable
 	 * @param profileType	The Motion Profiling trajectory type
 	 */
 	
-	public GyroMPController(MPValue values, SpeedController motor, PIDSource source, AnalogGyro gyro) 
+	public GyroMPController(GyroMPValue values, SpeedController motor, PIDSource source, AnalogGyro gyro) 
 	{
 		this.values = values;
 		this.motor = motor;
@@ -213,12 +213,12 @@ public class GyroMPController implements Sendable
 		return passedTime > trajectory.getTotalTime();
 	}
 	
-	public MPValue getValues() 
+	public GyroMPValue getValues() 
 	{
 		return values;
 	}
 
-	public void setValues(MPValue values)        
+	public void setValues(GyroMPValue values)        
 	{
 		this.values = values;
 	}
