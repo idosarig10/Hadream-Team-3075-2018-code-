@@ -38,7 +38,7 @@ public class Chassis extends DriveSystem3075
 	private EncoderTalon3075 leftEncoder;
 	private EncoderTalon3075 rightEncoder;
 	
-	public AnalogGyro gyro = new AnalogGyro(0);
+	public AnalogGyro gyro;
 
 	public static enum Shift
 	{
@@ -52,6 +52,8 @@ public class Chassis extends DriveSystem3075
 		rearLeft = new WPI_TalonSRX(RobotMap.rearLeft);
 		rearRight = new WPI_TalonSRX(RobotMap.rearRight);
 
+		gyro = new AnalogGyro(1);
+		
 		frontLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 		frontRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 		
@@ -64,7 +66,7 @@ public class Chassis extends DriveSystem3075
 		frontLeft.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms, 10);
 		frontRight.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms, 10);
 
-		super.initialize(frontRight, frontLeft, rightEncoder, leftEncoder);
+		super.initialize(frontRight, frontLeft, rightEncoder, leftEncoder, gyro);
 
 		rearLeft.set(ControlMode.Follower, frontLeft.getDeviceID());
 		rearRight.set(ControlMode.Follower, frontRight.getDeviceID());
@@ -89,6 +91,7 @@ public class Chassis extends DriveSystem3075
 		super.setPIDValues(Constants.leftVelocityPID, Constants.rightVelocityPID);
 		super.setMPValues(Constants.leftMPValue, Constants.rightMPValue);
 		super.setTurnMPValues(Constants.leftTurnMP, Constants.rightTurnMP);
+		super.setGyroMPValues(Constants.leftGyroMPValue, Constants.rightGyroMPValue);
 		super.setVelocityTolerance(0);
 		super.setPositionTolerance(Constants.positionTolerance);
 		super.setAngleTolerance(Constants.turnAngleTolerance);

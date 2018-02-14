@@ -1,4 +1,4 @@
-package Atunomous;
+package Autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -6,8 +6,8 @@ public class AutonomousMiddle extends CommandGroup
 {
 	public AutonomousMiddle()
 	{
-		addSequential(new AutonomousMiddlePickUp());
-		addSequential(new AutonomousMiddleSwitchLeft());
+		addSequential(new MiddlePickUp());
+		addSequential(new MiddleSwitchLeft());
 	}
 
 }

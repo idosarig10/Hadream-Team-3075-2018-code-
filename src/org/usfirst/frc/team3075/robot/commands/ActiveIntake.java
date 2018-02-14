@@ -2,6 +2,7 @@ package org.usfirst.frc.team3075.robot.commands;
 
 import org.usfirst.frc.team3075.robot.Robot;
 
+import LibPurple.utils.Utils;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -25,6 +26,8 @@ public class ActiveIntake extends Command
     // Called just before this Command runs the first time
     protected void initialize() 
     {
+    	Robot.intake.rightServo.setAngle(0);
+    	Robot.intake.leftServo.setAngle(0);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -50,6 +53,8 @@ public class ActiveIntake extends Command
     	Robot.intake.setConveyorSpeed(0);
     	Robot.intake.setLeftWheelSpeed(0);
     	Robot.intake.setRightWheelSpeed(0);
+    	Robot.intake.leftServo.setAngle(-90);
+    	Robot.intake.rightServo.setAngle(90);
     }
 
     // Called when another command which requires one or more of the same

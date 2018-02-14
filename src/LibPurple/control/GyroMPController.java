@@ -113,10 +113,9 @@ public class GyroMPController extends MPController
     	double D = ((positionError - lastError) / dt) * values.positionPid.kD;
     	
     	double output = P + I + D + values.kv * setpoint.velocity + values.ka * setpoint.acceleration;
-    	
     	if(this.trajectory instanceof GyroTrajectory && this.gyro != null && this.values instanceof GyroMPValue)
     	{
-	    	double headingError = ((GyroTrajectory) this.trajectory).getHeading() * getAngle();
+	    	double headingError = ((GyroTrajectory) this.trajectory).getHeading() - getAngle();
 	    	double gyroOutput = headingError * ((GyroMPValue) this.values).kGyro;
     	
 	    	output += gyroOutput;
@@ -129,6 +128,10 @@ public class GyroMPController extends MPController
     	
     }
 	
+	public void setGyro(AnalogGyro gyro) {
+		this.gyro = gyro;
+	}
+
 	public void setAngleTolerance(double tolerance)
 	{
 		this.angleTolerance = tolerance;
@@ -139,6 +142,15 @@ public class GyroMPController extends MPController
 		return this.gyro.getAngle();
 	}
 	
+	public double getOutput()
+	{
+		return this.motor.get();
+	}
+	
+	public double getSetpointAngle()
+	{
+		return ((GyroTrajectory)this.trajectory).getHeading();
+	}
 	
 	public synchronized boolean onAngle()
 	{

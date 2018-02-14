@@ -25,8 +25,7 @@ public class Elevator extends Subsystem
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	
-	private WPI_TalonSRX bigElevatorMasterMotor;
-	private WPI_TalonSRX bigElevatorSlaveMotor;
+	public WPI_TalonSRX bigElevatorMotor;
 	public WPI_TalonSRX smallElevatorMotor ;
 	private Encoder bigElevatorEncoder;
 	private Encoder smallElevatorEncoder;
@@ -36,32 +35,29 @@ public class Elevator extends Subsystem
 	
 	private PIDController bigElevatorPID;
 	public PIDController smallElevatorPID;
-	public Solenoid3075 climbShifter;
 	
 	public Elevator()
 	{
-		bigElevatorMasterMotor = new WPI_TalonSRX(RobotMap.bigElevatorMasterMotor);
-		bigElevatorSlaveMotor = new WPI_TalonSRX(RobotMap.bigElevatorSlaveMotor);
+		bigElevatorMotor = new WPI_TalonSRX(RobotMap.bigElevatorMasterMotor);
 		smallElevatorMotor = new WPI_TalonSRX(RobotMap.smallElevatorMotor);
 		
 		bigElevatorEncoder = new Encoder(2, 3);
-		bigElevatorPID = new PIDController(0, 0, 0, bigElevatorEncoder, bigElevatorMasterMotor);
+		bigElevatorPID = new PIDController(0.0000143, 0, 0.00070, bigElevatorEncoder, bigElevatorMotor);
 		bigElevatorPID.setAbsoluteTolerance(Constants.bigElevatorTolerance);
 		smallElevatorEncoder = new Encoder(0, 1);
 		
 		smallElevatorPID = new PIDController(0.000006, 0.0000001, 0.00009, smallElevatorEncoder, smallElevatorMotor);
 		smallElevatorPID.setAbsoluteTolerance(Constants.smallElevatorTolerance);
 		
-		bigElevatorMasterMotor.setInverted(true);
-		bigElevatorSlaveMotor.setInverted(true);
+		bigElevatorMotor.setInverted(true);
 		smallElevatorMotor.setInverted(false);
 		
 		smallElevatorEncoder.setReverseDirection(true);
 		
 		highMicroSwitch = new DigitalInput(RobotMap.highMicroSwitch);
 		middleMicroSwitch = new DigitalInput(RobotMap.middleMicroSwitch);
-		bigElevatorSlaveMotor.set(ControlMode.Follower, bigElevatorMasterMotor.getDeviceID());
-		climbShifter = new Solenoid3075(RobotMap.climbSolenoidForward, RobotMap.climbSolenoidBackward);
+		
+		bigElevatorPID.setOutputRange(-0.6666, 0.6666);
 	}
 	
 	public void resetEncoders()
@@ -69,11 +65,12 @@ public class Elevator extends Subsystem
 		this.bigElevatorEncoder.reset();
 		this.smallElevatorPID.setSetpoint(0);
 		this.smallElevatorEncoder.reset();
+		this.bigElevatorPID.setSetpoint(0);
 	}
 	
 	public void setBigElevatorMasterMotor(double speed) 
 	{
-		bigElevatorMasterMotor.set(speed);
+		bigElevatorMotor.set(speed);
 	}
 	
 	public void setSmallElevatorMotor(double speed)

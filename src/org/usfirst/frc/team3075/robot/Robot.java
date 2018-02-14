@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package org.usfirst.frc.team3075.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -20,9 +21,20 @@ import java.lang.Thread.State;
 import org.usfirst.frc.team3075.robot.commands.ActiveIntake;
 import org.usfirst.frc.team3075.robot.commands.ExampleCommand;
 import org.usfirst.frc.team3075.robot.subsystems.Chassis;
+import org.usfirst.frc.team3075.robot.subsystems.Climb;
 import org.usfirst.frc.team3075.robot.subsystems.Elevator;
 import org.usfirst.frc.team3075.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team3075.robot.subsystems.Intake;
+
+import Autonomous.AutonomousLeftScale;
+import Autonomous.AutonomousLeftSwitch;
+import Autonomous.AutonomousMiddle;
+import Autonomous.AutonomousRightScale;
+import Autonomous.AutonomousRightSwitch;
+import LibPurple.control.GyroMPController;
+import LibPurple.control.GyroSetpoint;
+import LibPurple.systems.DriveSystem3075;
+import LibPurple.utils.Utils;
 
 import javax.swing.text.StyleContext.SmallAttributeSet;
 
@@ -41,11 +53,13 @@ public class Robot extends IterativeRobot
 	public static Chassis driveSystem = new Chassis();
 	public static Elevator elevator = new Elevator();
 	public static Intake intake = new Intake();
+	public static Climb climb = new Climb();
 	
+	public static String gameData = "LLL";
 
 
 	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	SendableChooser<Command> chooser = new SendableChooser<Command>();
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -55,7 +69,11 @@ public class Robot extends IterativeRobot
 	public void robotInit() {
 		oi = new OI();
 		chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		chooser.addObject("Left Scale", new AutonomousLeftScale());
+		chooser.addObject("Left Switch", new AutonomousLeftSwitch());
+		chooser.addObject("Middle with intake", new AutonomousMiddle());
+		chooser.addObject("Right Scale", new AutonomousRightScale());
+		chooser.addObject("Right Switch", new AutonomousRightSwitch());
 		SmartDashboard.putData("Auto mode", chooser);
 		rightMaxV = 0;
 		leftMaxV = 0;
@@ -86,7 +104,9 @@ public class Robot extends IterativeRobot
 	 * <p>You can add additional auto modes by adding additional commands to the
 	 */
 	@Override
-	public void autonomousInit() {
+	public void autonomousInit()
+	{
+		this.gameData = DriverStation.getInstance().getGameSpecificMessage();
 		autonomousCommand = chooser.getSelected();
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
@@ -153,14 +173,21 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putNumber("right XD max v", rightMaxV);
 		SmartDashboard.putNumber("gyro angle", driveSystem.gyro.getAngle());
 		SmartDashboard.putNumber("angle", driveSystem.getAngle());
-		SmartDashboard.putNumber("elevator position" , elevator.getPositionSmallEncoder());
-		SmartDashboard.putNumber("elevator error", elevator.smallElevatorPID.getError());
-		SmartDashboard.putNumber("elevator pid output", elevator.smallElevatorPID.get());
-		SmartDashboard.putNumber("small elevator power", elevator.smallElevatorMotor.get());
+		SmartDashboard.putNumber("small elevator position" , elevator.getPositionSmallEncoder());
+		SmartDashboard.putNumber("big elevator position", elevator.getPositionBigEncoder());
+		SmartDashboard.putNumber("right servo angle", Robot.intake.rightServo.getAngle());
+		SmartDashboard.putNumber("left mp output", driveSystem.getLeftMPController().getOutput());
+		SmartDashboard.putNumber("talon value", Robot.elevator.bigElevatorMotor.get());
+		SmartDashboard.putNumber("elevator stick", oi.elevatorStick.getRawAxis(1));
+		SmartDashboard.putString("solenoid", intake.wheelsCylinder.get() + "");
+//		Utils.print("left encoder = " + driveSystem.getLeftEncoder().getRawPosition());
+//		SmartDashboard.putNumber("elevator error", elevator.smallElevatorPID.getError());
+//		SmartDashboard.putNumber("elevator pid output", elevator.smallElevatorPID.get());
 //		SmartDashboard.putNumber("pdp current", PDPJNI.getPDPTotalCurrent(1));
 		
 		if(Robot.driveSystem.getLeftMPController().getSetpoint() != null)
 		{
+//			SmartDashboard.putNumber("setpoint angle", driveSystem.getLeftMPController().getSetpointAngle());
 			SmartDashboard.putNumber("setpoint p", driveSystem.getLeftMPController().getSetpoint().position);
 			SmartDashboard.putNumber("setpoint v", driveSystem.getLeftMPController().getSetpoint().velocity);
 			SmartDashboard.putNumber("setpoint a", driveSystem.getLeftMPController().getSetpoint().acceleration);
