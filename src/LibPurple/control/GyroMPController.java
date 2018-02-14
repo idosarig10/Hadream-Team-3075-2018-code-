@@ -13,20 +13,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
 
-public class GyroMPController implements Sendable 
+public class GyroMPController extends MPController 
 {
 
 	/**
 	 * A <b>structure</b> for storing Motion Profiling values
 	 */
-	public static class GyroMPValue
+	public static class GyroMPValue extends MPValue
 	{
-		public PIDvalue positionPid;
-		public double kv;
-		public double ka;
 		public double kGyro;
-		
-		public GyroMPValue() {}
 		
 		/**
 		 * Allocate an MPValue on the Motion Profiler
@@ -40,63 +35,21 @@ public class GyroMPController implements Sendable
 		 */
 		public GyroMPValue(PIDvalue pid, double kv, double ka, double kGyro)
 		{
-			this.positionPid = pid;
-			this.kv = kv;
-			this.ka = ka;
+			super(pid, kv, ka);
 			this.kGyro = kGyro;
 		}
 		
 	}
 	
-	/**
-	 * An asynchronous task for calculating the output and
-	 * following the path
-	 */
-    private class GyroMPTask extends TimerTask 
+	
+    private AnalogGyro gyro;
+	private double angleTolerance;
+	
+    public GyroMPController(MPValue values, SpeedController motor, PIDSource source)
     {
-
-        private GyroMPController controller;
-        
-        public GyroMPTask(GyroMPController controller)
-        { 
-        	super();
-            this.controller = controller;
-            controller.currTask = this;
-        }
-
-       @Override
-       public void run() 
-       {
-            controller.calculate();
-       }
-        
+    	super(values, motor, source);
     }
-
-    private GyroMPValue values;
-	private SpeedController motor;
-	private PIDSource source;
-	private AnalogGyro gyro;
-	private GyroTrajectory trajectory;
-	
-	private double positionTolerance = 0.1;
-	private double angleTolerance = 1;
-	private boolean enabled = false; // fixed you alon <3
-	private java.util.Timer controllerLoop;
-	private final double period = 0.01; 
-	
-	private GyroSetpoint setpoint;
-	private double startTime;
-	
-
-	private double passedTime;
-	private double now;
-	private double dt;
-	private double lastTime;
-	private double lastError;
-	private double errorIntegral;
-	
-	private TimerTask currTask;
-
+    
 	/**
 	 * @param values	Motion Profiling values for generating the path
 	 * @param motor		The motor to which we output the calculated value
@@ -104,31 +57,12 @@ public class GyroMPController implements Sendable
 	 * @param profileType	The Motion Profiling trajectory type
 	 */
 	
-	public GyroMPController(GyroMPValue values, SpeedController motor, PIDSource source, AnalogGyro gyro) 
+	public GyroMPController(MPValue values, SpeedController motor, PIDSource source, AnalogGyro gyro) 
 	{
-		this.values = values;
-		this.motor = motor;
-		this.source = source;
+		super(values, motor, source);
 		this.gyro = gyro;
-		
-		// make sure the sensor will give us position and not rate
-		source.setPIDSourceType(PIDSourceType.kDisplacement);
-				
-		controllerLoop = new java.util.Timer();
-		controllerLoop.schedule(new GyroMPTask(this), 0L, (long) (period * 1000));
 	}
     
-    public void setTrajectory(GyroTrajectory trajectory)
-    {
-    	this.trajectory = trajectory;
-    	this.setpoint = new GyroSetpoint();
-		this.now = 0;
-		this.lastTime = 0;
-		this.lastError = 0;
-		this.errorIntegral = 0;
-		startTime = Timer.getFPGATimestamp();
-    }
-
 	public void calculate()
     {
 		if(!enabled)
@@ -153,6 +87,7 @@ public class GyroMPController implements Sendable
 			setpoint.position = this.trajectory.getDistance();
 			setpoint.velocity = 0;
 			setpoint.acceleration = 0;
+			
 		}
 		else
 		{
@@ -176,12 +111,15 @@ public class GyroMPController implements Sendable
     	double P = positionError * values.positionPid.kP;
     	double I = errorIntegral * values.positionPid.kI;
     	double D = ((positionError - lastError) / dt) * values.positionPid.kD;
- 
-    	double headingError = setpoint.heading - this.gyro.getAngle();
-    	double gyroOutput = headingError * this.values.kGyro;
     	
-    	double output = P + I + D + values.kv * setpoint.velocity + values.ka * setpoint.acceleration + gyroOutput;
+    	double output = P + I + D + values.kv * setpoint.velocity + values.ka * setpoint.acceleration;
+    	if(this.trajectory instanceof GyroTrajectory && this.gyro != null && this.values instanceof GyroMPValue)
+    	{
+	    	double headingError = ((GyroTrajectory) this.trajectory).getHeading() - getAngle();
+	    	double gyroOutput = headingError * ((GyroMPValue) this.values).kGyro;
     	
+	    	output += gyroOutput;
+    	}
     	motor.set(output);
     	
     	lastError = positionError;
@@ -190,190 +128,41 @@ public class GyroMPController implements Sendable
     	
     }
 	
-	private void endTask()
-	{
-		this.currTask.cancel();
-	}
-	
-	/**
-	 * @return	whether the system is on target (using the tolerance)
-	 */
-	public synchronized boolean onTarget() 
-	{
-		return Utils.inRange(source.pidGet(), this.trajectory.getDistance(), this.positionTolerance);
-	}
-	
-	public synchronized boolean onAngle()
-	{
-		return Utils.inRange(gyro.getAngle(), this.trajectory.getFinalAngle(), this.angleTolerance);
-	}
-	
-	public boolean isTimeUp()
-	{
-		return passedTime > trajectory.getTotalTime();
-	}
-	
-	public GyroMPValue getValues() 
-	{
-		return values;
+	public void setGyro(AnalogGyro gyro) {
+		this.gyro = gyro;
 	}
 
-	public void setValues(GyroMPValue values)        
-	{
-		this.values = values;
-	}
-
-	public double getPositionTolerance()
-	{
-		return positionTolerance;
-	}
-	
-	public double getAngleTolerance()
-	{
-		return this.angleTolerance;
-	}
-
-	public void setPositionTolerance(double tolerance) 
-	{
-		this.positionTolerance = tolerance;
-	}
-	
 	public void setAngleTolerance(double tolerance)
 	{
 		this.angleTolerance = tolerance;
 	}
 	
-	public void enable() throws IllegalMonitorStateException
+	public double getAngle()
 	{
-		synchronized(currTask)
-		{
-			if(this.enabled == false)
-			{
-				this.enabled = true;
-				currTask.notify();
-			}
-		}
+		return this.gyro.getAngle();
+	}
+	
+	public double getOutput()
+	{
+		return this.motor.get();
+	}
+	
+	public double getSetpointAngle()
+	{
+		return ((GyroTrajectory)this.trajectory).getHeading();
+	}
+	
+	public synchronized boolean onAngle()
+	{
+		if(this.trajectory instanceof GyroTrajectory && this.gyro != null && this.values instanceof GyroMPValue)
+    	{
+			return Utils.inRange(gyro.getAngle(), ((GyroTrajectory) this.trajectory).getFinalAngle(), this.angleTolerance);
+    	}
+		return true;
 	}
 
-	private void disableTask() throws InterruptedException
+	public double getAngleTolerance()
 	{
-		synchronized(currTask)
-		{
-			this.enabled = false;
-			currTask.wait();
-		}
-	}
-	
-	public void disable()
-	{
-		this.enabled = false;
-	}
-	
-	public boolean isEnabled()
-	{
-		return enabled;
-	}
-	
-	public Trajectory3075 getTrajectory() 
-	{
-		return trajectory;
-	}
-	
-	public double getPositionError()
-	{
-		return setpoint.position - source.pidGet();
-	}
-	
-	private ITable m_table;
-	
-	private final ITableListener m_listener = (table, key, value, isNew) -> {
-	    if (key.equals("P") || key.equals("I") || key.equals("D") || key.equals("kV") || key.equals("kA")) {
-	      if (values.positionPid.kP != table.getNumber("P", 0.0) || values.positionPid.kI != table.getNumber("I", 0.0)
-	          || values.positionPid.kD != table.getNumber("D", 0.0)
-//	          || values.kv != table.getNumber("kV", 0.0)
-	          || values.ka != table.getNumber("kA", 0.0)) 
-	      {
-	        values.positionPid.kP = table.getNumber("P", 0.0);
-	        values.positionPid.kI = table.getNumber("I", 0.0);
-	        values.positionPid.kD = table.getNumber("D", 0.0);
-	       
-//	        values.kv = table.getNumber("kV", 0.0);
-	        values.ka = table.getNumber("kA", 0.0);
-	      }
-	    }
-	  };
-	  
-	public void initTable(ITable subtable) {
-		m_table = subtable;
-		m_table.putNumber("P", values.positionPid.kP);
-		m_table.putNumber("I", values.positionPid.kI);
-		m_table.putNumber("D", values.positionPid.kD);
-		m_table.putNumber("kV", values.kv);
-		m_table.putNumber("kA", values.ka);
-		
-		m_table.addTableListener(m_listener, false);
-		updateTable();
-	}
-
-	public ITable getTable() {
-		// TODO Auto-generated method stub
-		return m_table;
-	}
-
-	public String getSmartDashboardType() {
-		// TODO Auto-generated method stub
-		return "Motion Profiling Controller";
-	}
-	
-	public void updateTable() 
-	{
-	    if (m_table != null && setpoint != null) 
-	    {
-	      	m_table.putBoolean("Enabled", enabled);
-	    	m_table.putNumber("Position Setpoint", setpoint.position);
-	    	m_table.putNumber("Velocity Setpoint", setpoint.velocity);
-	    	m_table.putNumber("Acceleration Setpoint", setpoint.acceleration);
-	      	m_table.putNumber("Sensor position", source.pidGet());
-	      	m_table.putNumber("Position Error", getPositionError());
-	    }
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setName(String name) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getSubsystem() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setSubsystem(String subsystem) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void initSendable(SendableBuilder builder) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public Trajectory3075.Setpoint getSetpoint() {
-		return setpoint;
-	}
-	
-	public double getPassedTime()
-	{
-		return this.passedTime;
+		return this.angleTolerance;
 	}
 }

@@ -27,14 +27,14 @@ public class AutoSetBigElevator extends Command
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	Robot.elevator.setBigElevatorMasterMotor(1);
+    protected void execute() 
+    {
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished()
     {
-    	return Robot.elevator.bigElevatorOnTarget();
+    	return false;
     }
 
     // Called once after isFinished returns true
