@@ -1,4 +1,4 @@
-package Atunomous;
+package Autonomous;
 
 import org.usfirst.frc.team3075.robot.Constants;
 import org.usfirst.frc.team3075.robot.Robot;
@@ -8,9 +8,9 @@ import org.usfirst.frc.team3075.robot.commands.ReleaseCube;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class AutonomousMiddleSwitchLeft extends CommandGroup
+public class MiddleSwitchLeft extends CommandGroup
 {
-	public AutonomousMiddleSwitchLeft() 
+	public MiddleSwitchLeft() 
 	{
 		addSequential(Robot.driveSystem.turnAngleTrapizodial(-60), 2.4);
 		addSequential(Robot.driveSystem.driveStraightTrapizodial(2.4, false));

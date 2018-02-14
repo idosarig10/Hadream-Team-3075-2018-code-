@@ -6,7 +6,8 @@ import java.util.logging.FileHandler;
 
 import org.usfirst.frc.team3075.robot.Robot;
 
-
+import LibPurple.control.GyroMPController;
+import LibPurple.control.GyroTrajectory;
 import LibPurple.control.MPController;
 import LibPurple.control.MPController.MPValue;
 import LibPurple.control.PIDvalue;
@@ -14,14 +15,17 @@ import LibPurple.control.TrajectoryFile;
 import LibPurple.control.TrajectorySMP;
 import LibPurple.control.Trajectory3075;
 import LibPurple.control.Trajectory3075.Type;
+import LibPurple.control.TrajectoryBezier;
 import LibPurple.control.TrajectoryFile;
 import LibPurple.control.TrajectorySMP;
 import LibPurple.control.TrajectoryTMP;
 import LibPurple.control.TrajectoryTSEMP;
+import LibPurple.control.GyroMPController.GyroMPValue;
 import LibPurple.sensors.ConsoleJoystick;
 import LibPurple.sensors.Encoder3075;
 import LibPurple.systems.DriveSystem3075.DrivingState;
 import LibPurple.utils.Utils;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.PIDController;
@@ -62,6 +66,8 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 
 	private Encoder3075 rightEncoder;
 	private Encoder3075 leftEncoder;
+	
+	private AnalogGyro gyro;
 
 	private PIDController rightPID;
 	protected PIDvalue rightPIDValue;
@@ -69,12 +75,15 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	private PIDController leftPID;
 	private PIDvalue leftPIDValue;
 
-	protected MPController rightMP;
+	protected GyroMPController rightMP;
 	protected MPValue rightMPValue;
 	protected MPValue rightTurnMPValue;
-	protected MPController leftMP;
+	protected GyroMPController leftMP;
 	protected MPValue leftMPValue;
 	protected MPValue leftTurnMPValue;
+	
+	protected GyroMPValue leftGyroMPValue;
+	protected GyroMPValue rightGyroMPValue;
 
 	protected double rightMaxV;
 	protected double leftMaxV;
@@ -101,9 +110,18 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		this.rightEncoder.setPIDSourceType(PIDSourceType.kRate);
 		this.leftEncoder.setPIDSourceType(PIDSourceType.kRate);
 
-		leftMP = new MPController(leftMPValue, leftMotor, leftEncoder);
-		rightMP = new MPController(rightMPValue, rightMotor, rightEncoder);
+		leftMP = new GyroMPController(leftMPValue, leftMotor, leftEncoder);
+		rightMP = new GyroMPController(rightMPValue, rightMotor, rightEncoder);
 
+	}
+	
+	protected void initialize(SpeedController rightMotor, SpeedController leftMotor,
+			Encoder3075 rightEncoder, Encoder3075 leftEncoder, AnalogGyro gyro)
+	{
+		initialize(rightMotor, leftMotor, rightEncoder, leftEncoder);
+		this.gyro = gyro;
+		leftMP.setGyro(gyro);
+		rightMP.setGyro(gyro);
 	}
 
 	public Encoder3075 getLeftEncoder()
@@ -238,6 +256,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		rightEncoder.reset();
 		leftPID.reset();
 		rightPID.reset();
+		gyro.reset();
 	}
 
 	public Command arcadeDrive(Joystick joystick)
@@ -302,6 +321,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	{
 		return new DriveDistance(this, distance, distance, endless, getMaxA(), getMaxA(), Type.TrapizoidalMotionProfile, getMaxV(), getMaxV());
 	}
+
 	
 	public Command driveStraightRelativeTolerance(double distance, double tolerancePercentage)
 	{
@@ -341,7 +361,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		Utils.print("left max v:" + (leftMaxV/2));
 		Utils.print("right max v: " + (rightMaxV/2));
 
-		return new DriveDistance(this, leftDistance, rightDistance, false, leftMaxA, rightMaxA, Type.TrapizoidalMotionProfile, leftMaxV, rightMaxV);
+		return new DriveDistance(this, leftDistance, rightDistance, false, leftMaxA, rightMaxA, Type.TrapizoidalMotionProfile, leftMaxV, rightMaxV, leftRadius, rightRadius, clockwise);
 	}
 	
 	public Command driveArcMpValues(double radius, double angle, boolean clockwise, MPValue values)
@@ -376,15 +396,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	 */
 	public Command drive2D(String rightFile, String leftFile)
 	{
-		return new Drive2D(this, rightFile, leftFile, false, false);
-	}
-
-	public Command drive2D(String rightFile, String leftFile, boolean reversed)
-	{
-		if(reversed)
-			return new Drive2D(this, leftFile, rightFile, false, reversed);
-		else
-			return new Drive2D(this, rightFile, leftFile, false, reversed);
+		return new Drive2D(this, rightFile, leftFile);
 	}
 
 	/**
@@ -520,6 +532,15 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		leftMP.setValues(leftTurnMPValue);
 		rightMP.setValues(rightTurnMPValue);
 	}
+	
+	public void setGyroMPValues(GyroMPValue leftGyroMPValue, GyroMPValue rightGyroMPValue)
+	{
+		this.leftGyroMPValue = leftGyroMPValue;
+		this.rightGyroMPValue = rightGyroMPValue;
+		
+		leftMP.setValues(leftGyroMPValue);
+		rightMP.setValues(rightGyroMPValue);
+	}
 
 	public double getRightMaxV()
 	{
@@ -588,7 +609,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		return rightMP;
 	}
 
-	public MPController getLeftMPController()
+	public GyroMPController getLeftMPController()
 	{
 		return leftMP;
 	}
@@ -684,6 +705,9 @@ class XboxArcade extends Command
 	private double leftValue;
 	private double rightValue;
 	private double last = 0;
+	private double last2 = 0;
+	private double last3 = 0;
+	private double last4 = 0;
 
 	public XboxArcade(DriveSystem3075 driveSystem, ConsoleJoystick stick) {
 		requires(driveSystem);
@@ -708,14 +732,20 @@ class XboxArcade extends Command
 		throttle = Utils.deadband(throttle, 0.01);
 		//		turn = Utils.deadband(turn, 0.3);
 
-		//		throttle = Utils.accellimit(throttle, last, 0.2);
+//		throttle = Utils.accellimit(throttle, last, 0.8);
+		throttle = (throttle + last + last2 + last3 + last4) / 5;
 		leftValue = (throttle + turn);
 		rightValue = (throttle - turn);
 
 		driveSystem.set(rightValue, leftValue);
 
+		double x = last;
+		double y = last2;
+		double z = last3;
 		last = throttle;
-
+		last2 = x;
+		last3 = y;
+		last4 = z;
 	}
 
 
@@ -990,6 +1020,10 @@ class DriveDistance extends Command
 	double tolerance;
 	MPValue arcValues;
 	
+	boolean isGyro = false;
+	double leftRadius, rightRadius;
+	boolean clockwise;
+	
 	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA)
 	{
 		requires(driveSystem);
@@ -1019,6 +1053,20 @@ class DriveDistance extends Command
 		this.rightMaxV = rightMaxV;
 	}
 	
+	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA, Type MPType, double leftMaxV, double rightMaxV, double leftRadius, double rightRadius, boolean clockwise)
+	{
+		this(driveSystem, leftDistance, rightDistance, endless, leftmaxA, rightMaxA);
+		this.MPType = MPType;
+		this.leftMaxV = leftMaxV;
+		this.rightMaxV = rightMaxV;
+		this.isGyro = true;
+		this.leftRadius = leftRadius;
+		this.rightRadius = rightRadius;
+		this.clockwise = clockwise;
+		driveSystem.leftGyroMPValue.kGyro = driveSystem.leftGyroMPValue.kGyro;
+		driveSystem.rightGyroMPValue.kGyro = -driveSystem.leftGyroMPValue.kGyro; 
+		driveSystem.setGyroMPValues(driveSystem.leftGyroMPValue, driveSystem.rightGyroMPValue);
+	}
 	
 	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA, Type MPType, double leftMaxV, double rightMaxV, MPValue arcValues)
 	{
@@ -1031,7 +1079,6 @@ class DriveDistance extends Command
 		this(driveSystem, leftDistance, rightDistance, endless, leftmaxA, rightMaxA, MPType, leftMaxV, rightMaxV);
 		this.tolerance = tolerancePrecentage;
 	}
-
 
 	@Override
 	protected void initialize() 
@@ -1046,14 +1093,10 @@ class DriveDistance extends Command
 			driveSystem.setMPValues(this.arcValues, this.arcValues);
 		}
 		
-		Utils.print("tolerance - " + this.tolerance );
 		if(this.tolerance == 0)	
 			driveSystem.setTolerance(driveSystem.positionTolerance);
 		else
-		{
-			Utils.print("calc tolerance - " + (this.tolerance * ((this.leftDistance + this.rightDistance) / 2)));
 			driveSystem.setTolerance(this.tolerance * ((this.leftDistance + this.rightDistance) / 2));
-		}
 
 		if(this.MPType == Type.SinosoidalMotionProfile)
 		{
@@ -1062,8 +1105,16 @@ class DriveDistance extends Command
 		}
 		else if(this.MPType == Type.TrapizoidalMotionProfile)
 		{
-			rightMP.setTrajectory(new TrajectoryTMP(rightDistance, rightMaxA, rightMaxV));
-			leftMP.setTrajectory(new TrajectoryTMP(leftDistance, leftMaxA, leftMaxV));
+			if(!isGyro){
+				rightMP.setTrajectory(new TrajectoryTMP(rightDistance, rightMaxA, rightMaxV));
+				leftMP.setTrajectory(new TrajectoryTMP(leftDistance, leftMaxA, leftMaxV));
+			}
+			else
+			{
+				driveSystem.setGyroMPValues(driveSystem.leftGyroMPValue, driveSystem.rightGyroMPValue);
+				rightMP.setTrajectory(new GyroTrajectory(rightDistance, rightMaxA, rightMaxV, rightRadius, clockwise));
+				leftMP.setTrajectory(new GyroTrajectory(leftDistance, leftMaxA, leftMaxV, leftRadius, clockwise));
+			}
 		}
 		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
 		this.handle = Utils.initialiseCSVFile("/graphs/drive1");
@@ -1076,7 +1127,6 @@ class DriveDistance extends Command
 	{
 		double[] params =  {leftMP.getPassedTime(), leftMP.getSetpoint().position, Robot.driveSystem.getLeftEncoder().getDistance(), leftMP.getSetpoint().velocity, Robot.driveSystem.getLeftEncoder().getRate(),leftMP.getSetpoint().acceleration, rightMP.getSetpoint().position, Robot.driveSystem.getRightEncoder().getDistance(), rightMP.getSetpoint().velocity, Robot.driveSystem.getRightEncoder().getRate(),rightMP.getSetpoint().acceleration};
 		Utils.addCSVLine(this.handle, params);
-
 	}
 
 	@Override
@@ -1093,7 +1143,6 @@ class DriveDistance extends Command
 	protected void end() 
 	{
 		Utils.closeCSVFile(this.handle);
-		//		Utils.closeCSVFile(this.rightHandle);
 		leftMP.disable();
 		rightMP.disable();
 		//		Utils.print("left end velocity: " + Robot.driveSystem.getLeftEncoder().getRate());
@@ -1115,39 +1164,34 @@ class Drive2D extends Command
 	MPController rightMP;
 	MPController leftMP;
 
-	boolean endless;
-	boolean reversed;
 	String rightMotorFile;
 	String leftMotorFile;
 
 	DrivingState prevState;
 
 
-	public Drive2D(DriveSystem3075 driveSystem, String rightMotorFile, String leftMotorFile, boolean endless, boolean reversed)
+	public Drive2D(DriveSystem3075 driveSystem, String rightMotorFile, String leftMotorFile)
 	{
 		requires(driveSystem);
 
 		this.driveSystem = driveSystem;
 		this.rightMotorFile = rightMotorFile;
 		this.leftMotorFile = leftMotorFile;
-		this.endless = endless;
-		this.reversed = reversed;
 
 		rightMP = driveSystem.getRightMPController();
 		leftMP = driveSystem.getLeftMPController();
-
 	}
+	
 	@Override
 	protected void initialize() 
 	{
-
 		prevState = driveSystem.state;
 		driveSystem.reset();
 
 		driveSystem.setMPValues(driveSystem.leftMPValue, driveSystem.rightMPValue);
 		driveSystem.setTolerance(driveSystem.positionTolerance);
-		rightMP.setTrajectory(new TrajectoryFile(rightMotorFile, reversed));
-		leftMP.setTrajectory(new TrajectoryFile(leftMotorFile, reversed));
+		rightMP.setTrajectory(new TrajectoryBezier(rightMotorFile));
+		leftMP.setTrajectory(new TrajectoryBezier(leftMotorFile));
 		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
 	}
 

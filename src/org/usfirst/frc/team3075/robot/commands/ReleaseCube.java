@@ -19,7 +19,9 @@ public class ReleaseCube extends Command
 
     // Called just before this Command runs the first time
     protected void initialize() 
-    {	
+    {
+    	Robot.intake.leftServo.setAngle(0);
+    	Robot.intake.rightServo.setAngle(0);
     }
 
     // Called repeatedly when this Command is scheduled to run

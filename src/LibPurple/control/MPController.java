@@ -76,28 +76,28 @@ public class MPController implements Sendable
     }
     
     
-	private MPValue values;
-	private SpeedController motor;
-	private PIDSource source;
-	private Trajectory3075 trajectory;
+	protected MPValue values;
+	protected SpeedController motor;
+	protected PIDSource source;
+	protected Trajectory3075 trajectory;
 	
-	private double tolerance = 0.1;
-	private boolean enabled = false; // fixed you alon <3
-	private java.util.Timer controllerLoop;
-	private final double period = 0.01; 
+	protected double tolerance = 0.1;
+	protected boolean enabled = false; // fixed you alon <3
+	protected java.util.Timer controllerLoop;
+	protected final double period = 0.01; 
 	
-	private Trajectory3075.Setpoint setpoint;
-	private double startTime;
+	protected Trajectory3075.Setpoint setpoint;
+	protected double startTime;
 	
 
-	private double passedTime;
-	private double now;
-	private double dt;
-	private double lastTime;
-	private double lastError;
-	private double errorIntegral;
+	protected double passedTime;
+	protected double now;
+	protected double dt;
+	protected double lastTime;
+	protected double lastError;
+	protected double errorIntegral;
 	
-	private TimerTask currTask;
+	protected TimerTask currTask;
 	
 	/**
 	 * @param values	Motion Profiling values for generating the path
@@ -239,7 +239,7 @@ public class MPController implements Sendable
 		}
 	}
 
-	private void disableTask() throws InterruptedException
+	protected void disableTask() throws InterruptedException
 	{
 		synchronized(currTask)
 		{

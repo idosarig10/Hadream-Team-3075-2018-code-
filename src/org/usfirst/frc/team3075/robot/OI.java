@@ -10,10 +10,12 @@ package org.usfirst.frc.team3075.robot;
 import org.usfirst.frc.team3075.robot.commands.SetShift;
 import org.usfirst.frc.team3075.robot.subsystems.Chassis;
 
-import Atunomous.AutonomousLeftScale;
-import Atunomous.AutonomousLeftSwitch;
-import Atunomous.AutonomousMiddle;
-import Atunomous.AutonomousMiddlePickUp;
+import Autonomous.AutonomousLeftScale;
+import Autonomous.AutonomousLeftSwitch;
+import Autonomous.AutonomousMiddle;
+import Autonomous.LeftScale;
+import Autonomous.LeftSwitch;
+import Autonomous.MiddlePickUp;
 import LibPurple.sensors.ConsoleJoystick;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Button;
 
 import org.usfirst.frc.team3075.robot.commands.ActiveIntake;
+import org.usfirst.frc.team3075.robot.commands.AutoSetBigElevator;
 import org.usfirst.frc.team3075.robot.commands.AutoSetSmallElevator;
 import org.usfirst.frc.team3075.robot.commands.ExampleCommand;
 import org.usfirst.frc.team3075.robot.commands.FoldWheels;
@@ -52,29 +55,32 @@ public class OI {
 	Button lockWheelsButton = new JoystickButton(driverStick, 8);
 	Button flipDrive = new JoystickButton(driverStick, 7);
 	Button foldWheels = new JoystickButton(elevatorStick, 2);
-	Button climbShifter = new JoystickButton(elevatorStick, 3);
 	Button autoSmallElevatorTop = new JoystickButton(elevatorStick, 4);
 	Button autoSmallElevatorDown = new JoystickButton(elevatorStick, 1);
+	Button autoBigElevatorTop = new JoystickButton(elevatorStick, 7);
+	Button autoBigElevatorDown = new JoystickButton(elevatorStick, 8);
 
   	public OI() 
 	{
 		lowShiftButton.whenPressed(new SetShift(Chassis.Shift.Power));
 		highShiftButton.whenPressed(new SetShift(Chassis.Shift.Speed));
-//		driveforward.whenPressed(new AutonomousMiddle());
+		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(1, false));
 		
 		
-		driveforward.whenPressed(Robot.driveSystem.driveArc(1, 180, true));
+//		driveforward.whenPressed(Robot.driveSystem.driveArc(1, 90, true));
+//		driveforward.whenPressed(Robot.driveSystem.drive2D("/Paths/middle_intake_left.csv", "/Paths/middle_intake_right.csv"));
 //		driveforward.whenPressed(Robot.driveSystem.driveStraightRelativeTolerance(1, 0.5));
 		activeIntakeButton.toggleWhenPressed(new ActiveIntake(0.7, 0.7));
 		lockWheelsButton.toggleWhenPressed(Robot.driveSystem.driveStraightTrapizodial(0, true));
 		releaseCubeButton.whileHeld(new ReleaseCube());
 		flipDrive.whenPressed(driverStick.reverseDirection(1));
 		foldWheels.whenPressed(new FoldWheels());
-		climbShifter.whenPressed(Robot.elevator.climbShifter.ToggleCommand());
 		autoSmallElevatorTop.whenPressed(new AutoSetSmallElevator(Constants.smallElevatorTopPosition));
 		autoSmallElevatorDown.whenPressed(new AutoSetSmallElevator(Constants.smallElevatorDownPosition));
+		autoBigElevatorTop.toggleWhenPressed(new AutoSetBigElevator(Constants.bigElevatorTopPosition));
+		autoBigElevatorDown.toggleWhenPressed(new AutoSetBigElevator(Constants.bigelevatorDownPosition));
 		
-//		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(2, false));
+//		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(1, false));
 //		driveforward.whenPressed(Robot.driveSystem.driveArc(1, 90, false));
 	}
 }

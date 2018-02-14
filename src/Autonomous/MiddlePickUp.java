@@ -1,14 +1,14 @@
-package Atunomous;
+package Autonomous;
 
 import org.usfirst.frc.team3075.robot.Robot;
 import org.usfirst.frc.team3075.robot.commands.ActiveIntake;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class AutonomousMiddlePickUp extends CommandGroup
+public class MiddlePickUp extends CommandGroup
 {
 	//TODO fix
-	public AutonomousMiddlePickUp()
+	public MiddlePickUp()
 	{
 //		addSequential(Robot.driveSystem.driveStraightTrapizodial(1.7, false));
 //		addSequential(Robot.driveSystem.turnAngleTrapizodial(-20));
