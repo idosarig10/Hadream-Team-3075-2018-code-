@@ -27,7 +27,7 @@ public class AutonomousRightSwitch extends CommandGroup{
 			}
 			else if(Robot.gameData.charAt(1) == 'R')
 			{
-				addSequential(Robot.driveSystem.driveStraightRelativeTolerance(8, 0.01));
+				addSequential(Robot.driveSystem.driveStraightRelativeTolerance(8, 0.01, 1, 1.7));
 				addSequential(Robot.driveSystem.turnAngleTrapizodial(90));
 				addSequential(new AutoSetSmallElevator(Constants.smallElevatorTopPosition));
 				addSequential(new ReleaseCube(), 1);

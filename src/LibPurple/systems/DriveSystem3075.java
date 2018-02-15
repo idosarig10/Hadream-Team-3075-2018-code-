@@ -323,9 +323,9 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	}
 
 	
-	public Command driveStraightRelativeTolerance(double distance, double tolerancePercentage)
+	public Command driveStraightRelativeTolerance(double distance, double tolerancePercentage, double maxA, double maxV)
 	{
-		return new DriveDistance(this, distance, distance, false, getMaxA(), getMaxA(), Type.TrapizoidalMotionProfile, getMaxV(), getMaxV(), tolerancePercentage);
+		return new DriveDistance(this, distance, distance, false, maxA, maxA, Type.TrapizoidalMotionProfile, maxV, maxV, tolerancePercentage);
 	}
 
 	

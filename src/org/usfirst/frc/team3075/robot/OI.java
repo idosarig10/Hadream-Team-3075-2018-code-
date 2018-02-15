@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 
 import org.usfirst.frc.team3075.robot.commands.ActiveIntake;
 import org.usfirst.frc.team3075.robot.commands.AutoSetBigElevator;
+import org.usfirst.frc.team3075.robot.commands.AutoSetElevators;
 import org.usfirst.frc.team3075.robot.commands.AutoSetSmallElevator;
 import org.usfirst.frc.team3075.robot.commands.ExampleCommand;
 import org.usfirst.frc.team3075.robot.commands.FoldWheels;
@@ -59,15 +60,16 @@ public class OI {
 	Button autoSmallElevatorDown = new JoystickButton(elevatorStick, 1);
 	Button autoBigElevatorTop = new JoystickButton(elevatorStick, 7);
 	Button autoBigElevatorDown = new JoystickButton(elevatorStick, 8);
+	Button autoSetElevators = new JoystickButton(elevatorStick, 3);
 
   	public OI() 
 	{
 		lowShiftButton.whenPressed(new SetShift(Chassis.Shift.Power));
 		highShiftButton.whenPressed(new SetShift(Chassis.Shift.Speed));
-		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(1, false));
+		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(2, 1.7, 1));
 		
 		
-//		driveforward.whenPressed(Robot.driveSystem.driveArc(1, 90, true));
+//		driveforward.whenPressed(Robot.driveSystem.turnAngleTrapizodial(180));
 //		driveforward.whenPressed(Robot.driveSystem.drive2D("/Paths/middle_intake_left.csv", "/Paths/middle_intake_right.csv"));
 //		driveforward.whenPressed(Robot.driveSystem.driveStraightRelativeTolerance(1, 0.5));
 		activeIntakeButton.toggleWhenPressed(new ActiveIntake(0.7, 0.7));
@@ -79,6 +81,7 @@ public class OI {
 		autoSmallElevatorDown.whenPressed(new AutoSetSmallElevator(Constants.smallElevatorDownPosition));
 		autoBigElevatorTop.toggleWhenPressed(new AutoSetBigElevator(Constants.bigElevatorTopPosition));
 		autoBigElevatorDown.toggleWhenPressed(new AutoSetBigElevator(Constants.bigelevatorDownPosition));
+		autoSetElevators.toggleWhenPressed(new AutoSetElevators(Constants.bigElevatorTopPosition, Constants.smallElevatorTopPosition));
 		
 //		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(1, false));
 //		driveforward.whenPressed(Robot.driveSystem.driveArc(1, 90, false));

@@ -119,6 +119,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		logToDashBoard();
 	}
 
 	@Override
@@ -165,8 +166,8 @@ public class Robot extends IterativeRobot
 
 	public void logToDashBoard()
 	{
-		SmartDashboard.putNumber("left raw distance", driveSystem.getLeftEncoder().getDistance());
-		SmartDashboard.putNumber("right raw distance",driveSystem.getRightEncoder().getDistance());
+		SmartDashboard.putNumber("left raw distance", driveSystem.getLeftEncoder().getRawPosition());
+		SmartDashboard.putNumber("right raw distance",driveSystem.getRightEncoder().getRawPosition());
 		SmartDashboard.putNumber("left  XD velicity", driveSystem.getLeftEncoder().getRate());
 		SmartDashboard.putNumber("right XD velocity", driveSystem.getRightEncoder().getRate());
 		SmartDashboard.putNumber("left XD max v", leftMaxV);
@@ -182,7 +183,7 @@ public class Robot extends IterativeRobot
 		SmartDashboard.putString("solenoid", intake.wheelsCylinder.get() + "");
 //		Utils.print("left encoder = " + driveSystem.getLeftEncoder().getRawPosition());
 //		SmartDashboard.putNumber("elevator error", elevator.smallElevatorPID.getError());
-//		SmartDashboard.putNumber("elevator pid output", elevator.smallElevatorPID.get());
+		SmartDashboard.putNumber("elevator pid output", elevator.bigElevatorPID.get());
 //		SmartDashboard.putNumber("pdp current", PDPJNI.getPDPTotalCurrent(1));
 		
 		if(Robot.driveSystem.getLeftMPController().getSetpoint() != null)

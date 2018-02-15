@@ -16,7 +16,7 @@ public class RightScale extends CommandGroup
     public RightScale() 
     {
 
-    	addSequential(Robot.driveSystem.driveStraightRelativeTolerance(8, 0.01));
+    	addSequential(Robot.driveSystem.driveStraightRelativeTolerance(8, 0.01, Constants.leftMaxA, Constants.powerLeftMaxV));
 		addSequential(Robot.driveSystem.turnAngleTrapizodial(90));
 		addSequential(new AutoSetSmallElevator(Constants.smallElevatorTopPosition));
 		addSequential(new ReleaseCube(), 1);

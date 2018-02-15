@@ -33,7 +33,7 @@ public class Elevator extends Subsystem
 	private static DigitalInput highMicroSwitch ;
 	private static DigitalInput middleMicroSwitch ;
 	
-	private PIDController bigElevatorPID;
+	public PIDController bigElevatorPID;
 	public PIDController smallElevatorPID;
 	
 	public Elevator()
@@ -42,11 +42,11 @@ public class Elevator extends Subsystem
 		smallElevatorMotor = new WPI_TalonSRX(RobotMap.smallElevatorMotor);
 		
 		bigElevatorEncoder = new Encoder(2, 3);
-		bigElevatorPID = new PIDController(0.0000143, 0, 0.00070, bigElevatorEncoder, bigElevatorMotor);
+		bigElevatorPID = new PIDController(0.0007, 0.0000001, 0, -0.14, bigElevatorEncoder, bigElevatorMotor);
 		bigElevatorPID.setAbsoluteTolerance(Constants.bigElevatorTolerance);
 		smallElevatorEncoder = new Encoder(0, 1);
 		
-		smallElevatorPID = new PIDController(0.000006, 0.0000001, 0.00009, smallElevatorEncoder, smallElevatorMotor);
+		smallElevatorPID = new PIDController(0.000003, 0.000000015, 0, smallElevatorEncoder, smallElevatorMotor);
 		smallElevatorPID.setAbsoluteTolerance(Constants.smallElevatorTolerance);
 		
 		bigElevatorMotor.setInverted(true);
@@ -57,7 +57,7 @@ public class Elevator extends Subsystem
 		highMicroSwitch = new DigitalInput(RobotMap.highMicroSwitch);
 		middleMicroSwitch = new DigitalInput(RobotMap.middleMicroSwitch);
 		
-		bigElevatorPID.setOutputRange(-0.6666, 0.6666);
+		bigElevatorPID.setOutputRange(-0.6, 0.6);
 	}
 	
 	public void resetEncoders()

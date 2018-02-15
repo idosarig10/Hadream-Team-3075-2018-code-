@@ -12,13 +12,15 @@ public class MiddleSwitchLeft extends CommandGroup
 {
 	public MiddleSwitchLeft() 
 	{
-		addSequential(Robot.driveSystem.turnAngleTrapizodial(-60), 2.4);
-		addSequential(Robot.driveSystem.driveStraightTrapizodial(2.4, false));
-		addSequential(Robot.driveSystem.driveArcMpValues(0.82, 140, true, Constants.arcMPValue));
-//		addParallel(new ActiveIntake(0.5, 0.5), 2.5);
-//		addSequential(Robot.driveSystem.turnAngleTrapizodial(135));
+		addSequential(Robot.driveSystem.turnAngleTrapizodial(-90));
+		addParallel(new AutoSetSmallElevator(Constants.smallElevatorTopPosition));
+		addSequential(Robot.driveSystem.driveArcMpValues(1.3, 90, true, Constants.arcMPValue));
+		addSequential(new ReleaseCube(), 1);
+		
+//		addSequential(Robot.driveSystem.driveArcMpValues(1, -95, true, Constants.arcMPValue));
+//		addSequential(Robot.driveSystem.driveStraightTrapizodial(3.2, false));
 //		addParallel(new AutoSetSmallElevator(Constants.smallElevatorTopPosition));
-//		addSequential(Robot.driveSystem.driveStraightTrapizodial(0.9, false));
+//		addSequential(Robot.driveSystem.driveArcMpValues(1.2, 170, true, Constants.arcMPValue));
 //		addSequential(new ReleaseCube(), 1);
 		
 	}
