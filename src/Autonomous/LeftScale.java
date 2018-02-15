@@ -18,10 +18,10 @@ public class LeftScale extends CommandGroup
     public LeftScale() 
     {
 
-    	addSequential(Robot.driveSystem.driveStraightTrapizodial(6.5, false), 5.8);
+    	addSequential(Robot.driveSystem.driveStraightTrapizodial(6.9, false), 5.8);
     	addSequential(new Wait(0.5));
-		addSequential(Robot.driveSystem.turnAngleTrapizodial(20));
+		addSequential(Robot.driveSystem.turnAngleTrapizodial(30));
 //		addSequential(new AutoSetElevators(Constants.bigElevatorTopPosition, Constants.smallElevatorTopPosition));
-		addSequential(new ReleaseCube(), 1);
+//		addSequential(new ReleaseCube(), 1);
     }
 }

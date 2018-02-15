@@ -26,8 +26,8 @@ public class ActiveIntake extends Command
     // Called just before this Command runs the first time
     protected void initialize() 
     {
-    	Robot.intake.rightServo.setAngle(90);
-    	Robot.intake.leftServo.setAngle(-90);
+    	Robot.intake.rightServo.setAngle(-90);
+    	Robot.intake.leftServo.setAngle(90);
     }
 
     // Called repeatedly when this Command is scheduled to run

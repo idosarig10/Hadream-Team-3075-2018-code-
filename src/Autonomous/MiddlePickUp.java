@@ -11,11 +11,11 @@ public class MiddlePickUp extends CommandGroup
 	public MiddlePickUp()
 	{
 
-		addSequential(Robot.driveSystem.driveStraightTrapizodial(1.66, false), 3);
+		addSequential(Robot.driveSystem.driveStraightTrapizodial(1.68, false), 3);
 		addSequential(Robot.driveSystem.turnAngleTrapizodial(24), 1.33);
-		addParallel(new ActiveIntake(0.7, 0.7), 3);
-		addSequential(Robot.driveSystem.driveStraightTrapizodial(0.3, 0.25, 0.5));
-		addSequential(Robot.driveSystem.driveStraightTrapizodial(-0.3, false));
+		addParallel(new ActiveIntake(0.7, 0.7), 2);
+		addSequential(Robot.driveSystem.driveStraightTrapizodial(0.3, 0.25, 0.5), 2);
+//		addSequential(Robot.driveSystem.driveStraightTrapizodial(-0.3, false));
 //		addSequential(Robot.driveSystem.driveStraightTrapizodial(-1.1, false));
 	}
 }

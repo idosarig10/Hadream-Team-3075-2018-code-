@@ -1,7 +1,11 @@
 package org.usfirst.frc.team3075.robot.commands;
 
+import java.io.FileWriter;
+import java.util.logging.FileHandler;
+
 import org.usfirst.frc.team3075.robot.Robot;
 
+import LibPurple.utils.Utils;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -10,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class AutoSetSmallElevator extends Command {
 	
 	private double setpoint;
+	FileWriter handle;
 
     public AutoSetSmallElevator(double setpoint) {
         // Use requires() here to declare subsystem dependencies
@@ -21,7 +26,9 @@ public class AutoSetSmallElevator extends Command {
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    protected void initialize() 
+    {
+    	handle = Utils.initialiseCSVFile("/graphs/elevator");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -29,7 +36,9 @@ public class AutoSetSmallElevator extends Command {
     	
     	Robot.elevator.setSmallElevatorSetpoint(setpoint);
     	Robot.elevator.activeSmallElevatorPID();
-    	
+//    	double[] params = {Robot.elevator.smallElevatorPID.getSetpoint(), Robot.elevator.smallElevatorPI};
+//    	Utils.addCSVLine(handle, params);
+  	
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -41,6 +50,7 @@ public class AutoSetSmallElevator extends Command {
     protected void end() {
     	
     	Robot.elevator.disableSmallElevatorPID();
+//    	Utils.closeCSVFile(handle);
     	
     }
 

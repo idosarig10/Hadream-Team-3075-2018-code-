@@ -385,7 +385,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		Utils.print("left max v:" + (leftMaxV/2));
 		Utils.print("right max v: " + (rightMaxV/2));
 
-		return new DriveDistance(this, leftDistance, rightDistance, false, leftMaxA, rightMaxA, Type.TrapizoidalMotionProfile, leftMaxV/2, rightMaxV/2, values);
+		return new DriveDistance(this, leftDistance, rightDistance, false, leftMaxA, rightMaxA, Type.TrapizoidalMotionProfile, leftMaxV, rightMaxV, values);
 	}
 
 	/**

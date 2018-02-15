@@ -16,6 +16,7 @@ import Autonomous.AutonomousMiddle;
 import Autonomous.LeftScale;
 import Autonomous.LeftSwitch;
 import Autonomous.MiddlePickUp;
+import Autonomous.MiddleSwitchLeft;
 import LibPurple.sensors.ConsoleJoystick;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -66,11 +67,12 @@ public class OI {
 	{
 		lowShiftButton.whenPressed(new SetShift(Chassis.Shift.Power));
 		highShiftButton.whenPressed(new SetShift(Chassis.Shift.Speed));
-//		driveforward.whenPressed(Robot.driveSystem.driveStraightTrapizodial(1, false));
+		driveforward.whenPressed(new MiddleSwitchLeft());
+//		driveforward.toggleWhenPressed(new );
 		
 		
 //		driveforward.whenPressed(Robot.driveSystem.turnAngleTrapizodial(180));
-		driveforward.whenPressed(Robot.driveSystem.drive2D("/Paths/middle_intake_left.csv", "/Paths/middle_intake_right.csv"));
+//		driveforward.whenPressed(Robot.driveSystem.drive2D("/Paths/middle_intake_left.csv", "/Paths/middle_intake_right.csv"));
 //		driveforward.whenPressed(Robot.driveSystem.driveStraightRelativeTolerance(1, 0.5));
 		activeIntakeButton.toggleWhenPressed(new ActiveIntake(0.7, 0.7));
 		lockWheelsButton.toggleWhenPressed(Robot.driveSystem.driveStraightTrapizodial(0, true));

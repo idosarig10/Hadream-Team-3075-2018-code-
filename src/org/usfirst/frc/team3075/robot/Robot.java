@@ -166,8 +166,8 @@ public class Robot extends IterativeRobot
 
 	public void logToDashBoard()
 	{
-		SmartDashboard.putNumber("left raw distance", driveSystem.getLeftEncoder().getRawPosition());
-		SmartDashboard.putNumber("right raw distance",driveSystem.getRightEncoder().getRawPosition());
+		SmartDashboard.putNumber("left raw distance", driveSystem.getLeftEncoder().getDistance());
+		SmartDashboard.putNumber("right raw distance",driveSystem.getRightEncoder().getDistance());
 		SmartDashboard.putNumber("left  XD velicity", driveSystem.getLeftEncoder().getRate());
 		SmartDashboard.putNumber("right XD velocity", driveSystem.getRightEncoder().getRate());
 		SmartDashboard.putNumber("left XD max v", leftMaxV);

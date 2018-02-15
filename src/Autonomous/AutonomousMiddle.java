@@ -7,6 +7,7 @@ public class AutonomousMiddle extends CommandGroup
 	public AutonomousMiddle()
 	{
 		addSequential(new MiddlePickUp());
+//		addSequential(new MiddlePath());
 		addSequential(new MiddleSwitchLeft());
 	}
 
