@@ -83,27 +83,33 @@ public class TrajectoryBezier extends Trajectory3075
 	@Override
 	public Setpoint calculate(double time) {
 		// TODO Auto-generated method stub
+		int i = 0;
 		try
 		{
 			TimeStamp currStamp = null;
 			if(time >= totalTime)
 			{
+				Utils.printErr("Time > Totaltime");
 				currStamp = stamps.get(stamps.size()-1);
 			}
 			else
 			{
-				int i = 1;
-		
-				double dt = Math.abs(stamps.get(lastSavedStampIndex).time - time);
-				double nextDt = Math.abs(stamps.get(lastSavedStampIndex + i).time - time);
+				i = 0;
+				
+				double dt = Math.abs(stamps.get(i).time - time);
+				double nextDt = Math.abs(stamps.get(i + 1).time - time);
 				while(dt > nextDt)
 				{
+					if(i < stamps.size()-1)
+					{
 					i++;
-					dt = Math.abs(stamps.get(lastSavedStampIndex + i - 1).time - time);
-					nextDt = Math.abs(stamps.get(lastSavedStampIndex + i).time - time);
+					dt = Math.abs(stamps.get(i - 1).time - time);
+					nextDt = Math.abs(stamps.get(i).time - time);
+					}
+					else
+						Utils.printErr("Please kill me now");
 				}
 				currStamp = stamps.get(i - 1);
-				lastSavedStampIndex = i;
 			}
 
 			setpoint.position = currStamp.position;
@@ -116,6 +122,7 @@ public class TrajectoryBezier extends Trajectory3075
 		catch(Exception e)
 		{
 			Utils.printErr(e.toString());
+			Utils.printErr("i= " + i);
 			return null;	
 		}
 	}
