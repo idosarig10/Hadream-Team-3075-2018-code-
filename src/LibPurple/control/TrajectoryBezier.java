@@ -94,22 +94,7 @@ public class TrajectoryBezier extends Trajectory3075
 			}
 			else
 			{
-				i = 0;
-				
-				double dt = Math.abs(stamps.get(i).time - time);
-				double nextDt = Math.abs(stamps.get(i + 1).time - time);
-				while(dt > nextDt)
-				{
-					if(i < stamps.size()-1)
-					{
-					i++;
-					dt = Math.abs(stamps.get(i - 1).time - time);
-					nextDt = Math.abs(stamps.get(i).time - time);
-					}
-					else
-						Utils.printErr("Please kill me now");
-				}
-				currStamp = stamps.get(i - 1);
+				currStamp = stamps.get((int) ((time / totalTime) * stamps.size()));
 			}
 
 			setpoint.position = currStamp.position;

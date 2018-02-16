@@ -340,7 +340,7 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 	 * @param angle - the angle of the motion, positive angle is left, negative is right
 	 * @param clockwise - true for driving on clockwise direction on the circle.
 	 */
-	public Command driveArc(double radius, double angle, boolean clockwise)
+	public Command driveArc(double radius, double angle, boolean clockwise, MPValue arcValues)
 	{
 		double leftRadius = clockwise ? radius +  (robotWidth / 2) : radius - (robotWidth / 2); // robot's left side circle radius
 		double rightRadius = clockwise ? radius -  (robotWidth / 2) : radius + (robotWidth / 2); //robot's right side circle radius
@@ -361,42 +361,18 @@ public abstract class DriveSystem3075 extends Subsystem implements Sendable
 		Utils.print("left max v:" + (leftMaxV/2));
 		Utils.print("right max v: " + (rightMaxV/2));
 
-		return new DriveDistance(this, leftDistance, rightDistance, false, leftMaxA, rightMaxA, Type.TrapizoidalMotionProfile, leftMaxV, rightMaxV, leftRadius, rightRadius, clockwise);
+		return new DriveDistance(this, leftDistance, rightDistance, false, leftMaxA, rightMaxA, Type.TrapizoidalMotionProfile, leftMaxV, rightMaxV, leftRadius, rightRadius, clockwise, arcValues);
 	}
 	
-	public Command driveArcMpValues(double radius, double angle, boolean clockwise, MPValue values)
-	{
-		double leftRadius = clockwise ? radius +  (robotWidth / 2) : radius - (robotWidth / 2); // robot's left side circle radius
-		double rightRadius = clockwise ? radius -  (robotWidth / 2) : radius + (robotWidth / 2); //robot's right side circle radius
-
-		double leftDistance = Math.toRadians(angle) * leftRadius; //robot's left side distance 
-		double rightDistance = Math.toRadians(angle) * rightRadius;//robot's right side distance
-
-		//robot's left side max acceleration
-		double leftMaxA = !clockwise ? getMaxA() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) : getMaxA();
-		//robot's right side max acceleration
-		double rightMaxA = clockwise ? getMaxA() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) : getMaxA();
-
-		//robot's left side max velocity
-		double leftMaxV = !clockwise ? getMaxV() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) : getMaxV();
-		//robot's right side max velocity
-		double rightMaxV = clockwise ? getMaxV() * (Math.min(leftRadius, rightRadius) / Math.max(leftRadius, rightRadius)) : getMaxV();
-
-		Utils.print("left max v:" + (leftMaxV/2));
-		Utils.print("right max v: " + (rightMaxV/2));
-
-		return new DriveDistance(this, leftDistance, rightDistance, false, leftMaxA, rightMaxA, Type.TrapizoidalMotionProfile, leftMaxV, rightMaxV, values);
-	}
-
 	/**
 	 * drives a specific path, using given files
 	 * @param rightFile - the file to the right engine
 	 * @param leftFile - the file to the left engine
 	 * @return
 	 */
-	public Command drive2D(String rightFile, String leftFile)
+	public Command drive2D(String rightFile, String leftFile, boolean reversed)
 	{
-		return new Drive2D(this, rightFile, leftFile);
+		return new Drive2D(this, rightFile, leftFile, reversed);
 	}
 
 	/**
@@ -1053,7 +1029,7 @@ class DriveDistance extends Command
 		this.rightMaxV = rightMaxV;
 	}
 	
-	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA, Type MPType, double leftMaxV, double rightMaxV, double leftRadius, double rightRadius, boolean clockwise)
+	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA, Type MPType, double leftMaxV, double rightMaxV, double leftRadius, double rightRadius, boolean clockwise, MPValue arcValues)
 	{
 		this(driveSystem, leftDistance, rightDistance, endless, leftmaxA, rightMaxA);
 		this.MPType = MPType;
@@ -1066,11 +1042,6 @@ class DriveDistance extends Command
 		driveSystem.leftGyroMPValue.kGyro = driveSystem.leftGyroMPValue.kGyro;
 		driveSystem.rightGyroMPValue.kGyro = -driveSystem.leftGyroMPValue.kGyro; 
 		driveSystem.setGyroMPValues(driveSystem.leftGyroMPValue, driveSystem.rightGyroMPValue);
-	}
-	
-	public DriveDistance(DriveSystem3075 driveSystem, double leftDistance, double rightDistance, boolean endless, double leftmaxA, double rightMaxA, Type MPType, double leftMaxV, double rightMaxV, MPValue arcValues)
-	{
-		this(driveSystem, leftDistance, rightDistance, endless, leftmaxA, rightMaxA, MPType, leftMaxV, rightMaxV);
 		this.arcValues = arcValues;
 	}
 	
@@ -1111,6 +1082,7 @@ class DriveDistance extends Command
 			}
 			else
 			{
+				Utils.print("yay Gyro");
 				driveSystem.setGyroMPValues(driveSystem.leftGyroMPValue, driveSystem.rightGyroMPValue);
 				rightMP.setTrajectory(new GyroTrajectory(rightDistance, rightMaxA, rightMaxV, rightRadius, clockwise));
 				leftMP.setTrajectory(new GyroTrajectory(leftDistance, leftMaxA, leftMaxV, leftRadius, clockwise));
@@ -1163,20 +1135,25 @@ class Drive2D extends Command
 	DriveSystem3075 driveSystem;
 	MPController rightMP;
 	MPController leftMP;
+	boolean reversed;
 
 	String rightMotorFile;
 	String leftMotorFile;
 
 	DrivingState prevState;
+	
+	FileWriter handle;
 
 
-	public Drive2D(DriveSystem3075 driveSystem, String rightMotorFile, String leftMotorFile)
+	public Drive2D(DriveSystem3075 driveSystem, String rightMotorFile, String leftMotorFile, boolean reversed)
 	{
 		requires(driveSystem);
 
 		this.driveSystem = driveSystem;
 		this.rightMotorFile = rightMotorFile;
 		this.leftMotorFile = leftMotorFile;
+		
+		this.reversed = reversed;
 
 		rightMP = driveSystem.getRightMPController();
 		leftMP = driveSystem.getLeftMPController();
@@ -1187,18 +1164,27 @@ class Drive2D extends Command
 	{
 		prevState = driveSystem.state;
 		driveSystem.reset();
-
+		
+		
+		handle = Utils.initialiseCSVFile("/graphs/Bezier");
 		driveSystem.setMPValues(driveSystem.leftMPValue, driveSystem.rightMPValue);
 		driveSystem.setTolerance(driveSystem.positionTolerance);
-		rightMP.setTrajectory(new TrajectoryBezier(rightMotorFile));
-		leftMP.setTrajectory(new TrajectoryBezier(leftMotorFile));
+		rightMP.setTrajectory(new TrajectoryFile(rightMotorFile, reversed));
+		leftMP.setTrajectory(new TrajectoryFile(leftMotorFile, reversed));
 		driveSystem.enterState(DriveSystem3075.DrivingState.DistanceMotionProfiled);
+	}
+	
+	protected void execute() 
+	{
+		double[] params =  {leftMP.getPassedTime(), leftMP.getSetpoint().position, Robot.driveSystem.getLeftEncoder().getDistance(), leftMP.getSetpoint().velocity, Robot.driveSystem.getLeftEncoder().getRate(),leftMP.getSetpoint().acceleration, rightMP.getSetpoint().position, Robot.driveSystem.getRightEncoder().getDistance(), rightMP.getSetpoint().velocity, Robot.driveSystem.getRightEncoder().getRate(),rightMP.getSetpoint().acceleration};
+		Utils.addCSVLine(this.handle, params);
 	}
 
 
 	@Override
 	protected void end() 
 	{
+		Utils.closeCSVFile(handle);
 		leftMP.disable();
 		rightMP.disable();
 		driveSystem.enterState(this.prevState);

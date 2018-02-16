@@ -31,7 +31,7 @@ public class Intake extends Subsystem
 		rightWheel = new WPI_TalonSRX(RobotMap.leftWheel);
 		leftWheel = new WPI_TalonSRX(RobotMap.rightWheel);
 		conveyor = new WPI_TalonSRX(RobotMap.conveyor);
-		wheelsCylinder = new Solenoid3075(5, 4);
+		wheelsCylinder = new Solenoid3075(6, 7);
 		this.rightServo = new Servo3075(1);
 		this.leftServo = new Servo3075(0);
 	}

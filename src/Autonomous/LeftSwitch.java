@@ -18,7 +18,7 @@ public class LeftSwitch extends CommandGroup
     {
         addSequential(Robot.driveSystem.driveStraightTrapizodial(3, false));
         addParallel(new AutoSetSmallElevator(Constants.smallElevatorTopPosition));
-        addSequential(Robot.driveSystem.driveArcMpValues(0.4, 90, true, Constants.arcMPValue));
+        addSequential(Robot.driveSystem.driveArc(0.4, 90, true, Constants.arcMPValue));
     	addSequential(new ReleaseCube(), 1);
     	
 //    	addSequential(Robot.driveSystem.turnAngleTrapizodial(-90));

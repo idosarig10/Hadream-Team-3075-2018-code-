@@ -28,7 +28,7 @@ public class Constants
 	public static final double rightTurnMaxA = 1.5;
 	public static final double leftTurnMaxA = 1.5;
 	
-	public static final double KGyro = 0;
+	public static final double KGyro = 0.3;
 	
 	public static final PIDvalue rightVelocityPID = new PIDvalue(0, 0, 0, 0);
 	public static final PIDvalue leftVelocityPID = new PIDvalue(0, 0, 0, 0);

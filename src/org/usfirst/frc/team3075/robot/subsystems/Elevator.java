@@ -58,6 +58,7 @@ public class Elevator extends Subsystem
 		middleMicroSwitch = new DigitalInput(RobotMap.middleMicroSwitch);
 		
 		bigElevatorPID.setOutputRange(-0.6, 0.6);
+		smallElevatorPID.setOutputRange(-0.8, 0.8);
 	}
 	
 	public void resetEncoders()

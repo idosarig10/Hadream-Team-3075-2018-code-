@@ -36,8 +36,8 @@ public class AutoSetSmallElevator extends Command {
     	
     	Robot.elevator.setSmallElevatorSetpoint(setpoint);
     	Robot.elevator.activeSmallElevatorPID();
-//    	double[] params = {Robot.elevator.smallElevatorPID.getSetpoint(), Robot.elevator.smallElevatorPI};
-//    	Utils.addCSVLine(handle, params);
+    	double[] params = {Robot.elevator.smallElevatorPID.getSetpoint(), Robot.elevator.smallElevatorMotor.get()};
+    	Utils.addCSVLine(handle, params);
   	
     }
 
@@ -50,7 +50,7 @@ public class AutoSetSmallElevator extends Command {
     protected void end() {
     	
     	Robot.elevator.disableSmallElevatorPID();
-//    	Utils.closeCSVFile(handle);
+    	Utils.closeCSVFile(handle);
     	
     }
 
